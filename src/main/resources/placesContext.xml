@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+    
+    <bean id="googleApiKeyProvider" class="net.twilightstudios.amex.rest.service.SimpleApiKeyProvider">
+        <constructor-arg>
+            <value>AIzaSyA27x5cAGeDq578qYGJH-HB3mIak4Esi9Q</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="geolocationService" class="net.twilightstudios.amex.geo.service.google.GoogleGeocodingService">
+        <constructor-arg ref="googleApiKeyProvider"/>
+        
+        <property name="url">
+            <value>https://maps.googleapis.com/maps/api/geocode/json</value>
+        </property>        
+    </bean>
+    
+    <bean id="mapsService" class="net.twilightstudios.amex.maps.service.google.GoogleMapsService">
+        <constructor-arg ref="googleApiKeyProvider"/>
+        
+        <property name="url">
+            <value>https://maps.googleapis.com/maps/api/staticmap</value>
+        </property>
+        
+        <property name="size"><value>512x512</value></property>
+        <property name="maptype"><value>hybrid</value></property>
+        <property name="zoom"><value>14</value></property>
+    </bean>
+    
+    <bean id="placesService" class="net.twilightstudios.amex.places.service.google.GooglePlacesService">
+        <constructor-arg ref="googleApiKeyProvider"/>
+
+        <property name="radius"><value>5000</value></property>
+        <property name="maxHeight"><value>1600</value></property>
+        <!--  <property name="maxWidth"><value>1600</value></property> -->
+                
+        <property name="url">
+            <value>https://maps.googleapis.com/maps/api/place/nearbysearch/json</value>            
+        </property>
+        
+        <property name="urlPhoto">
+            <value>https://maps.googleapis.com/maps/api/place/photo</value>            
+        </property>
+                
+    </bean>    
+</beans>
