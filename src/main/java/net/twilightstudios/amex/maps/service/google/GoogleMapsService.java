@@ -8,13 +8,16 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.twilightstudios.amex.maps.service.MapsService;
 import net.twilightstudios.amex.places.entity.Coordinates;
+import net.twilightstudios.amex.rest.service.RestProvider;
 import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 
@@ -23,7 +26,8 @@ public class GoogleMapsService implements MapsService {
 	private static final Log log = LogFactory.getLog(GoogleMapsService.class); 
 	
 	private final String apiKey;
-	//center=Berkeley,CA&zoom=14&size=400x400&key=API_KEY";
+		
+	private RestProvider restProvider;
 	
 	private String url;		
 	private String size;
@@ -35,6 +39,7 @@ public class GoogleMapsService implements MapsService {
 		this.apiKey = apiKeyProvider.getApiKey();
 	}
 
+	
 	@Override
 	public byte[] retrieveMap(Coordinates coordinates) throws MalformedURLException, IOException {
 
@@ -53,58 +58,48 @@ public class GoogleMapsService implements MapsService {
 		urlBuilder.append(apiKey);
 		
 		String urlString = urlBuilder.toString();
-		//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
-		URL urlObject = new URL(urlString);
 		
-		log.info("Retrieving: " + urlString);
-		
-		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
-		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
-		connection.setRequestMethod("GET");
-		connection.setDoOutput(false);
-		connection.setDoInput(true);
-		connection.connect();
-		
-		byte[] resultado;
-		
-		try(InputStream in = connection.getInputStream()){
-								
-			resultado = IOUtils.toByteArray(in);		
-		}
-		
-		return resultado;		
+		return restProvider.retrieveRawImage(urlString);
 	}
-
+	
 	@Override
-	public byte[] retrieveMap(String city) throws MalformedURLException, IOException  {
-
+	public byte[] retrieveMap(List<Coordinates> coordinates)
+			throws MalformedURLException, IOException {
+	
 		StringBuilder urlBuilder = new StringBuilder(url);
-		urlBuilder.append("?center=");
-		urlBuilder.append(city);
+		urlBuilder.append("?markers=");
+		urlBuilder.append(serializeCoordinates(coordinates));
+		urlBuilder.append("&size=");
+		urlBuilder.append(size);
+		urlBuilder.append("&maptype=");
+		urlBuilder.append(maptype);
 		urlBuilder.append("&key=");
 		urlBuilder.append(apiKey);
 		
 		String urlString = urlBuilder.toString();
-		//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
-		URL urlObject = new URL(urlString);
 		
-		log.info("Retrieving: " + urlString);
+		return restProvider.retrieveRawImage(urlString);
+	}
 		
-		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
-		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
-		connection.setRequestMethod("GET");
-		connection.setDoOutput(false);
-		connection.setDoInput(true);
-		connection.connect();
+	private String serializeCoordinates(List<Coordinates> coordinatesList){
 		
-		byte[] resultado;
-		
-		try(InputStream in = connection.getInputStream()){
-								
-			resultado = IOUtils.toByteArray(in);		
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+		for(Coordinates coordinates:coordinatesList){
+			
+			if(!first){
+				
+				builder.append("|");
+			}
+			else{
+				
+				first = false;
+			}
+			
+			builder.append(coordinates.getLat()).append(",").append(coordinates.getLon());
 		}
 		
-		return resultado;		
+		return builder.toString();
 	}
 	
 	//-- Getters y setters
@@ -140,4 +135,11 @@ public class GoogleMapsService implements MapsService {
 		this.zoom = zoom;
 	}
 
+	public RestProvider getRestProvider() {
+		return restProvider;
+	}
+
+	public void setRestProvider(RestProvider restProvider) {
+		this.restProvider = restProvider;
+	}	
 }

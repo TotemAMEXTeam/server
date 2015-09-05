@@ -12,7 +12,6 @@ import net.twilightstudios.amex.places.entity.Place;
 import net.twilightstudios.amex.places.service.PlacesService;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
-import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -81,6 +80,10 @@ public class GooglePlacesService implements PlacesService {
 		}
 		
 		place.setName(obj.getString("name"));
+		
+		JSONObject location = obj.getJSONObject("geometry").getJSONObject("location");
+		Coordinates coordinates = new Coordinates(location.getDouble("lat"), location.getDouble("lng"));
+		place.setCoord(coordinates);
 		
 		return place;
 	}

@@ -30,6 +30,9 @@
         <property name="size"><value>512x512</value></property>
         <property name="maptype"><value>hybrid</value></property>
         <property name="zoom"><value>14</value></property>
+        
+        <property name="restProvider" ref="restProvider"/>
+        
     </bean>
     
     <bean id="placesService" class="net.twilightstudios.amex.places.service.google.GooglePlacesService">
