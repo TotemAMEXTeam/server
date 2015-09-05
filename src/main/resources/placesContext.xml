@@ -13,8 +13,12 @@
         
         <property name="url">
             <value>https://maps.googleapis.com/maps/api/geocode/json</value>
-        </property>        
+        </property>
+        
+        <property name="restProvider" ref="restProvider"/>
     </bean>
+    
+    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>
     
     <bean id="mapsService" class="net.twilightstudios.amex.maps.service.google.GoogleMapsService">
         <constructor-arg ref="googleApiKeyProvider"/>
@@ -31,6 +35,8 @@
     <bean id="placesService" class="net.twilightstudios.amex.places.service.google.GooglePlacesService">
         <constructor-arg ref="googleApiKeyProvider"/>
 
+        <property name="restProvider" ref="restProvider"/>
+        
         <property name="radius"><value>5000</value></property>
         <property name="maxHeight"><value>1600</value></property>
         <!--  <property name="maxWidth"><value>1600</value></property> -->

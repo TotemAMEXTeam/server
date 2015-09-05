@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import net.twilightstudios.amex.maps.service.MapsService;
 import net.twilightstudios.amex.places.entity.Coordinates;
-import net.twilightstudios.amex.rest.service.AbstractRestService;
+import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 
 public class GoogleMapsService implements MapsService {

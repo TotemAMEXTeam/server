@@ -10,8 +10,9 @@ import java.util.List;
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.places.entity.Place;
 import net.twilightstudios.amex.places.service.PlacesService;
-import net.twilightstudios.amex.rest.service.AbstractRestService;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
+import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -21,11 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GooglePlacesService extends AbstractRestService implements PlacesService {
+public class GooglePlacesService implements PlacesService {
 
 	private static final Log log = LogFactory.getLog(GooglePlacesService.class);
 	private final String apiKey;
 	
+	private RestProvider restProvider;
 	
 	private String url;
 	private String urlPhoto;
@@ -101,7 +103,7 @@ public class GooglePlacesService extends AbstractRestService implements PlacesSe
 		
 		String urlString = urlBuilder.toString();
 		
-		String genreJson = retrieveRawInformation(urlString);
+		String genreJson = restProvider.retrieveRawInformation(urlString);
 		
 		JSONObject json = new JSONObject(genreJson);
 		
@@ -195,5 +197,13 @@ public class GooglePlacesService extends AbstractRestService implements PlacesSe
 
 	public void setMaxWidth(Integer maxWidth) {
 		this.maxWidth = maxWidth;
+	}
+
+	public RestProvider getRestProvider() {
+		return restProvider;
+	}
+
+	public void setRestProvider(RestProvider restProvider) {
+		this.restProvider = restProvider;
 	}
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+    
+    <bean id="openWeatherApiKeyProvider" class="net.twilightstudios.amex.rest.service.SimpleApiKeyProvider">
+        <constructor-arg>
+            <value>44f92811aad86da081fe87a40875faca</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="weatherService" class="net.twilightstudios.amex.weather.service.owm.OpenWeatherService">
+        <constructor-arg ref="openWeatherApiKeyProvider"/>
+        
+        <property name="restProvider" ref="restProvider"/>
+        
+        <property name="url">
+            <value>http://api.openweathermap.org/data/2.5/weather</value>
+        </property>        
+        
+        <property name="urlForecast">
+            <value>http://api.openweathermap.org/data/2.5/forecast</value>
+        </property>
+    </bean>
+    
+    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>    
+        
+</beans>

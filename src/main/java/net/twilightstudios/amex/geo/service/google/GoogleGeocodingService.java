@@ -2,33 +2,28 @@ package net.twilightstudios.amex.geo.service.google;
 
 import java.io.IOException;
 
+import net.twilightstudios.amex.geo.service.GeolocationService;
+import net.twilightstudios.amex.places.entity.Coordinates;
+import net.twilightstudios.amex.rest.service.ApiKeyProvider;
+import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.rest.service.SimpleRestProvider;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import net.twilightstudios.amex.geo.service.GeolocationService;
-import net.twilightstudios.amex.places.entity.Coordinates;
-import net.twilightstudios.amex.rest.service.AbstractRestService;
-import net.twilightstudios.amex.rest.service.ApiKeyProvider;
-
-public class GoogleGeocodingService extends AbstractRestService implements GeolocationService {
+public class GoogleGeocodingService implements GeolocationService {
 
 	private String url;
 	private final String apiKey;
+
+	private RestProvider restProvider;
 	
 	public GoogleGeocodingService(ApiKeyProvider apiKeyProvider) {
 		super();
 		this.apiKey = apiKeyProvider.getApiKey();
 	}
 	
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	@Override
 	public Coordinates geolocateCity(String cityName, String country) throws IOException, JSONException {
 
@@ -59,8 +54,25 @@ public class GoogleGeocodingService extends AbstractRestService implements Geolo
 		urlBuilder.append(apiKey);
 		
 		String urlString = urlBuilder.toString();
-		String genreJson = retrieveRawInformation(urlString);
+		String genreJson = restProvider.retrieveRawInformation(urlString);
 		
 		return new JSONObject(genreJson); 
+	}
+	
+	//GETTERs y SETTERS
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public RestProvider getRestProvider() {
+		return restProvider;
+	}
+
+	public void setRestProvider(RestProvider restProvider) {
+		this.restProvider = restProvider;
 	}
 }
