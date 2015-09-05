@@ -1,6 +1,7 @@
 package net.twilightstudios.amex.geo.service.google;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import net.twilightstudios.amex.geo.service.GeolocationService;
 import net.twilightstudios.amex.places.entity.Coordinates;
@@ -43,7 +44,7 @@ public class GoogleGeocodingService implements GeolocationService {
 		
 		StringBuilder urlBuilder = new StringBuilder(url);
 		urlBuilder.append("?address=");
-		urlBuilder.append(cityName);
+		urlBuilder.append(URLEncoder.encode(cityName, "UTF-8"));
 		
 		if(country!=null){
 			urlBuilder.append("&components=country:");

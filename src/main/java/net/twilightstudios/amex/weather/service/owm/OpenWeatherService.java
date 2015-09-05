@@ -1,6 +1,7 @@
 package net.twilightstudios.amex.weather.service.owm;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,7 +43,7 @@ public class OpenWeatherService implements WeatherService {
 
 		StringBuilder urlString = new StringBuilder(url);
 		urlString.append("?q=");
-		urlString.append(city);
+		urlString.append(URLEncoder.encode(city, "UTF-8"));
 		urlString.append("&APPID=");
 		urlString.append(appKey);
 		
@@ -63,7 +64,7 @@ public class OpenWeatherService implements WeatherService {
 	
 		StringBuilder urlString = new StringBuilder(urlForecast);
 		urlString.append("?q=");
-		urlString.append(city);
+		urlString.append(URLEncoder.encode(city, "UTF-8"));
 		urlString.append("&APPID=");
 		urlString.append(appKey);
 		
@@ -119,7 +120,10 @@ public class OpenWeatherService implements WeatherService {
         Wind windObj = new Wind();
         
         windObj.setSpeed(convertMphToKph( wind.getDouble("speed")));
-        windObj.setHeading(wind.getDouble("deg"));
+        
+        if(wind.has("deg")){
+        	windObj.setHeading(wind.getDouble("deg"));
+        }
         
         forecast.setWind(windObj);
         
