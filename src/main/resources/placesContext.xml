@@ -38,6 +38,10 @@
     <bean id="placesService" class="net.twilightstudios.amex.places.service.google.GooglePlacesService">
         <constructor-arg ref="googleApiKeyProvider"/>
 
+        <property name="providerId">
+            <value>GOOGLE</value>
+        </property>
+        
         <property name="restProvider" ref="restProvider"/>
         
         <property name="radius"><value>5000</value></property>
@@ -48,9 +52,14 @@
             <value>https://maps.googleapis.com/maps/api/place/nearbysearch/json</value>            
         </property>
         
+        <property name="urlDetail">
+            <value>https://maps.googleapis.com/maps/api/place/details/json</value>            
+        </property>
+        
         <property name="urlPhoto">
             <value>https://maps.googleapis.com/maps/api/place/photo</value>            
         </property>
-                
+
+        <property name="language"><value>es</value></property>
     </bean>    
 </beans>

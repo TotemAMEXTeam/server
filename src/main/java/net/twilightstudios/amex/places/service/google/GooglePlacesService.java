@@ -1,19 +1,16 @@
 package net.twilightstudios.amex.places.service.google;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.twilightstudios.amex.places.entity.Coordinates;
+import net.twilightstudios.amex.places.entity.OpeningDays;
 import net.twilightstudios.amex.places.entity.Place;
 import net.twilightstudios.amex.places.service.PlacesService;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,14 +19,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GooglePlacesService implements PlacesService {
-
+	
 	private static final Log log = LogFactory.getLog(GooglePlacesService.class);
 	private final String apiKey;
 	
 	private RestProvider restProvider;
 	
+	private String providerId;
+	
 	private String url;
+	private String urlDetail;
 	private String urlPhoto;
+	
+	private String language;		
 	private Integer radius;
 	private Integer maxHeight;
 	private Integer maxWidth;
@@ -50,6 +52,9 @@ public class GooglePlacesService implements PlacesService {
 			
 			JSONObject obj = list.getJSONObject(i);
 			Place place = buildPlace(obj);
+			JSONObject detail = retrieveRawDetailInformation(place.getId());
+			completePlace(place, detail);
+			
 			resultado.add(place);
 		}
 		
@@ -59,6 +64,8 @@ public class GooglePlacesService implements PlacesService {
 	private Place buildPlace(JSONObject obj) throws JSONException{
 		
 		Place place = new Place();
+		
+		place.setProvider(providerId);
 		place.setId(obj.getString("place_id"));
 		place.setAddressString(obj.getString("vicinity"));
 		
@@ -68,6 +75,15 @@ public class GooglePlacesService implements PlacesService {
 		else{
 			
 			place.setPriceLevel(-1);
+		}
+		
+		if(obj.has("rating")){
+			
+			place.setRating(obj.getInt("rating"));
+		}
+		else{
+			
+			place.setRating(-1);
 		}
 		
 		if(obj.has("photos")){
@@ -88,6 +104,35 @@ public class GooglePlacesService implements PlacesService {
 		return place;
 	}
 	
+	private Place completePlace(Place place, JSONObject obj) throws JSONException{
+		
+		JSONObject result = obj.getJSONObject("result");
+		
+		if(result.has("international_phone_number")){
+			
+			place.setPhone(result.getString("international_phone_number"));
+		}
+		else if(result.has("formatted_phone_number")){
+			
+			place.setPhone(result.getString("formatted_phone_number"));			
+		}
+		
+		if(result.has("opening_hours")){
+			
+			OpeningDays days = new OpeningDays();
+			JSONArray weekdayText = result.getJSONObject("opening_hours").getJSONArray("weekday_text");
+		
+			int index =0;
+			for(OpeningDays.Day day:OpeningDays.Day.values()){
+				
+				days.setOpeningHours(day, weekdayText.get(index).toString());
+			}
+			
+			place.setOpenningDays(days);
+		}
+		
+		return place;
+	}
 	
 	protected JSONObject retrieveRawInformation(Coordinates coord, List<String> type, int radius) throws IOException, JSONException{
 		
@@ -98,6 +143,8 @@ public class GooglePlacesService implements PlacesService {
 		urlBuilder.append(coord.getLon());
 		urlBuilder.append("&radius=");
 		urlBuilder.append(radius);
+		urlBuilder.append("&language=");
+		urlBuilder.append(language);
 		urlBuilder.append("&rankby=prominence");
 		urlBuilder.append("&types=");
 		urlBuilder.append(StringUtils.join(type, '|'));
@@ -113,6 +160,25 @@ public class GooglePlacesService implements PlacesService {
 		return json;
 	}
 	
+	protected JSONObject retrieveRawDetailInformation(String placeId) throws IOException, JSONException{
+		
+		StringBuilder urlBuilder = new StringBuilder(urlDetail);
+		urlBuilder.append("?placeid=");
+		urlBuilder.append(placeId);
+		urlBuilder.append("&language=");
+		urlBuilder.append(language);
+		urlBuilder.append("&key=");
+		urlBuilder.append(apiKey);
+		
+		String urlString = urlBuilder.toString();
+		
+		String genreJson = restProvider.retrieveRawInformation(urlString);
+		
+		JSONObject json = new JSONObject(genreJson);
+		
+		return json;
+	}
+
 	
 	@Override
 	public byte[] retrieveImage(String photoId) throws IOException{
@@ -139,26 +205,8 @@ public class GooglePlacesService implements PlacesService {
 		urlBuilder.append(apiKey);
 		
 		String urlString = urlBuilder.toString();
-		//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
-		URL urlObject = new URL(urlString);
 		
-		log.info("Retrieving: " + urlString);
-		
-		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
-		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
-		connection.setRequestMethod("GET");
-		connection.setDoOutput(false);
-		connection.setDoInput(true);
-		connection.connect();
-		
-		byte[] resultado;
-		
-		try(InputStream in = connection.getInputStream()){
-								
-			resultado = IOUtils.toByteArray(in);		
-		}
-		
-		return resultado;		
+		return restProvider.retrieveRawImage(urlString);		
 	}
 
 	// GETTERS y SETTERS
@@ -178,6 +226,14 @@ public class GooglePlacesService implements PlacesService {
 		this.urlPhoto = urlPhoto;
 	}
 	
+	public String getUrlDetail() {
+		return urlDetail;
+	}
+
+	public void setUrlDetail(String urlDetail) {
+		this.urlDetail = urlDetail;
+	}
+
 	public Integer getRadius() {
 		return radius;
 	}
@@ -208,5 +264,21 @@ public class GooglePlacesService implements PlacesService {
 
 	public void setRestProvider(RestProvider restProvider) {
 		this.restProvider = restProvider;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
+	public String getProviderId() {
+		return providerId;
+	}
+	
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
 	}
 }
