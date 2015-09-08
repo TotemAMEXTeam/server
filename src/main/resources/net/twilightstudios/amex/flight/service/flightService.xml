@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans default-lazy-init="true">
+
+	<bean id="flightService" class="net.twilightstudios.amex.flight.service.aena.AenaHTMLFlightService">
+		<property name="url" value="http://www.aena.es/csee/Satellite/infovuelos/es/"/>
+		<property name="sourceCharset" value="UTF-8"/>
+		<property name="flightCompanyParameter" value="company"/>
+		<property name="flightIdParameter" value="nvuelo"/>
+		<property name="flightDateParameter" value="hprevista"/>
+		<property name="responseFlightDataDivId" value="div#principalContentFicha_1024"/>
+		<property name="responseFlightDataTdDate" value="td[headers=fecha1 origen]"/>
+		<property name="responseFlightDataTdDeparture" value="td[headers=salida1 origen]"/>
+		<property name="responseFlightDataTdTerminal" value="td[headers=terminal1 origen]"/>
+		<property name="responseFlightDataTdDesk" value="td[headers=mostrador1 origen]"/>
+		<property name="responseFlightDataTdGate" value="td[headers=cinta1 origen]"/>
+		<property name="responseFlightDataTdState" value="td[headers=estado1 origen]"/>
+		<property name="responseFlightDataSpanRoute" value="span.trayecto"/>
+	</bean>
+
+</beans>

@@ -62,7 +62,7 @@ public class GoogleMapsService implements MapsService {
 		return restProvider.retrieveRawImage(urlString);
 	}
 	
-	@Override
+
 	public byte[] retrieveMap(List<Coordinates> coordinates)
 			throws MalformedURLException, IOException {
 	

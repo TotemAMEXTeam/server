@@ -24,8 +24,7 @@ public class GoogleGeocodingService implements GeolocationService {
 		super();
 		this.apiKey = apiKeyProvider.getApiKey();
 	}
-	
-	@Override
+
 	public Coordinates geolocateCity(String cityName, String country) throws IOException, JSONException {
 
 		JSONObject json = retrieveRawGeocode(cityName, country);		
