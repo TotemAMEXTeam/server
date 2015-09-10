@@ -18,7 +18,11 @@
         <property name="restProvider" ref="restProvider"/>
     </bean>
     
-    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>
+    <bean id="simpleRestProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>
+    
+    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.InMemoryCachedRestProvider">
+    	<constructor-arg ref="simpleRestProvider" />
+    </bean>
     
     <bean id="mapsService" class="net.twilightstudios.amex.maps.service.google.GoogleMapsService">
         <constructor-arg ref="googleApiKeyProvider"/>

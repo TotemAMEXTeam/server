@@ -39,6 +39,6 @@ public class PlacesServiceImpl implements PlacesService {
 	
 	@Override
 	public List<Place> retrieveActivities(Coordinates coordinates) throws JSONException, IOException {
-		return googlePlacesService.retrievePlaces(coordinates, Arrays.asList("aquarium","museum","art_gallery","stadium","church"));
+		return googlePlacesService.retrievePlaces(coordinates, Arrays.asList("aquarium","museum","art_gallery","stadium","church","mosque"));
 	}
 }

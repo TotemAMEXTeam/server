@@ -1,25 +1,16 @@
 package net.twilightstudios.amex.maps.service.google;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import net.twilightstudios.amex.maps.service.MapsService;
 import net.twilightstudios.amex.places.entity.Coordinates;
-import net.twilightstudios.amex.rest.service.RestProvider;
-import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
+import net.twilightstudios.amex.rest.service.RestProvider;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class GoogleMapsService implements MapsService {
 	

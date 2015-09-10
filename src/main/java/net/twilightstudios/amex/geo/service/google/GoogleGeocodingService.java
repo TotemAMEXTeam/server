@@ -7,7 +7,6 @@ import net.twilightstudios.amex.geo.service.GeolocationService;
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
-import net.twilightstudios.amex.rest.service.SimpleRestProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;

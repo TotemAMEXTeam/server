@@ -15,7 +15,7 @@ public class InMemoryCachedRestProvider implements RestProvider {
 	public InMemoryCachedRestProvider(RestProvider delegate){
 		
 		cache = new HashMap<String, CacheContent>();
-		cacheTTL = 300000;
+		cacheTTL = 3600000;
 		
 		this.delegate = delegate;
 	}

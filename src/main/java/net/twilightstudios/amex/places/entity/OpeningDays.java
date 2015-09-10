@@ -1,6 +1,5 @@
 package net.twilightstudios.amex.places.entity;
 
-import java.util.HashMap;
 
 public class OpeningDays {
 
