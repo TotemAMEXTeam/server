@@ -1,6 +1,7 @@
 package net.twilightstudios.amex.weather.rest;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -33,13 +34,21 @@ public class WeatherRestService {
 
 
 
-	@RequestMapping(value="/retrieveForecast/{city}", method=RequestMethod.GET, produces={"application/json"})
-	public Forecast retrieveForecast(@PathVariable String city) throws IOException, JSONException {
+	@RequestMapping(value="/retrieve/{city}", method=RequestMethod.GET, produces={"application/json"})
+	public Forecast retrieve(@PathVariable String city) throws IOException, JSONException {
 		try {
 			return weatherService.retrieveForecast(city);
 		} catch (Exception e) {
 			 throw new WebApplicationException(e);
 		}
 	}
-
+	
+	@RequestMapping(value="/retrieveForecast/{city}", method=RequestMethod.GET, produces={"application/json"})
+	public List<Forecast> retrieveForecast(@PathVariable String city) throws IOException, JSONException {
+		try {
+			return weatherService.retrieve5dayForecast(city);
+		} catch (Exception e) {
+			 throw new WebApplicationException(e);
+		}
+	}
 }

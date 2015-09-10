@@ -7,7 +7,7 @@ import java.util.List;
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.places.entity.OpeningDays;
 import net.twilightstudios.amex.places.entity.Place;
-import net.twilightstudios.amex.places.service.PlacesService;
+import net.twilightstudios.amex.places.service.PlacesServiceProvider;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
 
@@ -18,9 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GooglePlacesService implements PlacesService {
+public class GooglePlacesServiceProvider implements PlacesServiceProvider {
 	
-	private static final Log log = LogFactory.getLog(GooglePlacesService.class);
+	private static final Log log = LogFactory.getLog(GooglePlacesServiceProvider.class);
 	private final String apiKey;
 	
 	private RestProvider restProvider;
@@ -36,7 +36,7 @@ public class GooglePlacesService implements PlacesService {
 	private Integer maxHeight;
 	private Integer maxWidth;
 	
-	public GooglePlacesService(ApiKeyProvider apiKeyProvider){
+	public GooglePlacesServiceProvider(ApiKeyProvider apiKeyProvider){
 		
 		this.apiKey = apiKeyProvider.getApiKey();
 	}
@@ -121,12 +121,14 @@ public class GooglePlacesService implements PlacesService {
 			
 			OpeningDays days = new OpeningDays();
 			JSONArray weekdayText = result.getJSONObject("opening_hours").getJSONArray("weekday_text");
-		
-			int index =0;
-			for(OpeningDays.Day day:OpeningDays.Day.values()){
+
+			String[] openingHours = new String[7];			
+			for(int i=0;i<7;i++){
 				
-				days.setOpeningHours(day, weekdayText.get(index).toString());
+				openingHours[i] = weekdayText.get(i).toString();
 			}
+			
+			days.setOpeningHours(openingHours);
 			
 			place.setOpenningDays(days);
 		}

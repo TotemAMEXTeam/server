@@ -5,5 +5,6 @@
 
 	<import resource="classpath:net/twilightstudios/amex/flight/service/flightService.xml"/>
 	<import resource="classpath:weatherContext.xml"/>
+	<import resource="classpath:placesContext.xml"/>
 
 </beans>

@@ -17,17 +17,42 @@
 			<ref bean="weatherService" />
 		</property>
 	</bean>
+	
+	<bean id="mapsRestService"
+		class="net.twilightstudios.amex.maps.rest.MapsRestService">
+		<property name="mapsService">
+			<ref bean="mapsService" />
+		</property>
+	</bean>
+
+	<bean id="geolocationRestService"
+		class="net.twilightstudios.amex.geo.rest.GeolocationRestService">
+		<property name="geolocationService">
+			<ref bean="geolocationService" />
+		</property>
+	</bean>
+	
+	<bean id="placesRestService"
+		class="net.twilightstudios.amex.places.rest.PlacesRestService">
+		<property name="placesService">
+			<ref bean="placesService" />
+		</property>
+	</bean>
+
 
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
 			<list>
-				<ref bean="jsonMessageConverter" />
+				<ref bean="jsonMessageConverter" />				
 			</list>
 		</property>
 	</bean>
 
 	<bean id="jsonMessageConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		
+	<bean id="coordinatesMessageConverter"
+		class="net.twilightstudios.amex.places.rest.CoordinatesConverter" />
 
 </beans>

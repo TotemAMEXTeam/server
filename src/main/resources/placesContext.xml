@@ -35,7 +35,11 @@
         
     </bean>
     
-    <bean id="placesService" class="net.twilightstudios.amex.places.service.google.GooglePlacesService">
+    <bean id="placesService" class="net.twilightstudios.amex.places.service.impl.PlacesServiceImpl">
+    	<property name="googlePlacesService" ref="googlePlacesProvider" />   	
+    </bean>
+    
+    <bean id="googlePlacesProvider" class="net.twilightstudios.amex.places.service.google.GooglePlacesServiceProvider">
         <constructor-arg ref="googleApiKeyProvider"/>
 
         <property name="providerId">

@@ -1,7 +1,6 @@
 package net.twilightstudios.amex.places.entity;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class OpeningDays {
 
@@ -10,20 +9,17 @@ public class OpeningDays {
 		MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 	}
 	
-	private Map<Day,String> openingHours;
+	private String[] openingHours;
 	
-	public OpeningDays() {
+	public OpeningDays() {}
 	
-		openingHours = new HashMap<OpeningDays.Day, String>();
+	public void setOpeningHours(String[] openingHours){
+		
+		this.openingHours = openingHours;
 	}
 	
-	public void setOpeningHours(Day day, String hours){
+	public String[] getOpeningHours(){
 		
-		openingHours.put(day, hours);
-	}
-	
-	public String getOpeningHours(Day day){
-		
-		return openingHours.get(day);
+		return openingHours;
 	}
 }
