@@ -2,6 +2,7 @@ package net.twilightstudios.amex.flight.rest;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.WebApplicationException;
 
+import net.twilightstudios.amex.flight.entity.Flight;
 import net.twilightstudios.amex.flight.entity.FlightStatus;
 import net.twilightstudios.amex.flight.service.FlightService;
 
@@ -35,6 +37,15 @@ public class FlightRestService {
 	public @ResponseBody FlightStatus retrieveFlightStatus(@PathVariable String id, @RequestParam(value = "hprevista") String date) throws IOException {
 		try {
 			return flightService.retrieveFlightStatus(id, date);
+		} catch (Exception e) {
+			 throw new WebApplicationException(e);
+		}
+	}
+	
+	@RequestMapping(value="/dailyFlights/{airport}", method=RequestMethod.GET, produces={"application/json"})
+	public @ResponseBody List<Flight> retrieveDailyFlights (@PathVariable String airport) throws IOException {
+		try {
+			return flightService.retrieveDailyFlights(airport);
 		} catch (Exception e) {
 			 throw new WebApplicationException(e);
 		}
