@@ -9,14 +9,42 @@
 		<property name="flightCompanyParameter" value="company"/>
 		<property name="flightIdParameter" value="nvuelo"/>
 		<property name="flightDateParameter" value="hprevista"/>
+		<property name="responseStatusScheduledData" value="Salida prevista a las"/>
+		<property name="responseStatusArrivalData" value="Llegada prevista a las"/>
+		<property name="responseStatusOnFlightData" value="El vuelo ha despegado a las"/>
+		<property name="responseStatusLandedData" value="El vuelo ha aterrizado a las"/>
+		<property name="responseStatusCanceledData" value="cancelado"/>
 		<property name="responseFlightDataDivId" value="div#principalContentFicha_1024"/>
-		<property name="responseFlightDataTdDate" value="td[headers=fecha1 origen]"/>
-		<property name="responseFlightDataTdDeparture" value="td[headers=salida1 origen]"/>
-		<property name="responseFlightDataTdTerminal" value="td[headers=terminal1 origen]"/>
-		<property name="responseFlightDataTdDesk" value="td[headers=mostrador1 origen]"/>
-		<property name="responseFlightDataTdGate" value="td[headers=cinta1 origen]"/>
+		<property name="responseFlightDataTdDepartureDate" value="td[headers=fecha1 origen]"/>
+		<property name="responseFlightDataTdDepartureTime" value="td[headers=salida1 origen]"/>
+		<property name="responseFlightDataTdDepartureTerminal" value="td[headers=terminal1 origen]"/>
+		<property name="responseFlightDataTdDepartureDesk" value="td[headers=mostrador1 origen]"/>
+		<property name="responseFlightDataTdDepartureGate" value="td[headers=cinta1 origen]"/>
 		<property name="responseFlightDataTdState" value="td[headers=estado1 origen]"/>
 		<property name="responseFlightDataSpanRoute" value="span.trayecto"/>
+		<property name="responseFlightDataTdArrivalDate" value="td[headers=fecha2 destino]"/>
+		<property name="responseFlightDataTdArrivalTime" value="td[headers=salida2 destino]"/>
+		<property name="responseFlightDataTdArrivalTerminal" value="td[headers=terminal2 destino]"/>
+		<property name="responseFlightDataTdArrivalHall" value="td[headers=sala2 destino]"/>
+		<property name="responseFlightDataTdArrivalBelt" value="td[headers=cinta2 destino]"/>
+		<property name="responseFlightDataTdArrivalState" value="td[headers=estado2 destino]"/>
+		<property name="responseCompanyDataDivId" value="div.companiaFicha"/>
+		<property name="responseCompanyDataSpanName" value="dd"/>
+		<property name="urlDailyFlights" value="http://www.aena.es/csee/Satellite/infovuelos/es/"/>
+		<property name="airportCodeParameter" value="origin_ac"/>
+		<property name="movParameter" value="mov"/>
+		<property name="responseFlightsListDivId" value="div#flightResults"/>
+		<property name="responseFlightsListsTableClass" value="table[class=gnr_tb1]"/>
+		<property name="htmlTableRows" value="tr"/>
+		<property name="htmlTableCells" value="td"/>
+		<property name="responseFlightsListTdDepartureTime" value="td[headers=hora_0]"/>
+		<property name="responseFlightsListTdDepartureFlight" value="td[headers=vuelo_0]"/>
+		<property name="responseFlightsListTdDepartureDestiny" value="td[headers=destino_0]"/>
+		<property name="responseFlightsListTdDepartureCompany" value="td[headers=cia_0]"/>
+		<property name="responseFlightsListTdDepartureOrigin" value="div.headerVuelo"/>
+		<property name="responseFlightsListTdDepartureDate" value="caption.dateFlight"/>
+		<property name="responseFlightsListTdDepartureOriginSub" value="h3"/>
+		<property name="responseFlightsListTdDepartureOriginSubData" value="Salidas de "/>
 	</bean>
 
 </beans>

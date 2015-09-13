@@ -1,31 +1,27 @@
 package net.twilightstudios.amex.flight.entity;
 
+import java.util.Date;
+
 
 public class FlightStatus {
 
-	private String flightNumber;
+	private Flight flight;
 	private Status status;
-	
-	private String origin;
-	private String destiny;
 	
 	private String originTerminal;
 	private String destinyTerminal;
 	
-	private FlightDate scheduled;	
-	private	FlightDate estimated;
+	private Date scheduledArrival;
+	
+	private Date estimatedDeparture;
+	private Date estimatedArrival;
 	
 	private String checkInCounter;
 	private String boardingGate;
+	
+	private String hall;
+	private String belt;
 
-	
-	public String getFlightNumber() {
-		return flightNumber;
-	}
-	
-	public void setFlightNumber(String flightNumber) {
-		this.flightNumber = flightNumber;
-	}
 	
 	public Status getStatus() {
 		return status;
@@ -33,22 +29,6 @@ public class FlightStatus {
 	
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-	
-	public FlightDate getScheduled() {
-		return scheduled;
-	}
-	
-	public void setScheduled(FlightDate scheduled) {
-		this.scheduled = scheduled;
-	}
-	
-	public FlightDate getEstimated() {
-		return estimated;
-	}
-	
-	public void setEstimated(FlightDate estimated) {
-		this.estimated = estimated;
 	}
 
 	public String getCheckInCounter() {
@@ -67,22 +47,6 @@ public class FlightStatus {
 		this.boardingGate = boardingGate;
 	}
 
-	public String getOrigin() {
-		return origin;
-	}
-
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
-
-	public String getDestiny() {
-		return destiny;
-	}
-
-	public void setDestiny(String destiny) {
-		this.destiny = destiny;
-	}
-
 	public String getOriginTerminal() {
 		return originTerminal;
 	}
@@ -98,6 +62,55 @@ public class FlightStatus {
 	public void setDestinyTerminal(String destinyTerminal) {
 		this.destinyTerminal = destinyTerminal;
 	}
+
+	public String getHall() {
+		return hall;
+	}
+
+	public void setHall(String hall) {
+		this.hall = hall;
+	}
+
+	public String getBelt() {
+		return belt;
+	}
+
+	public void setBelt(String belt) {
+		this.belt = belt;
+	}
+
+	public Flight getFlight() {
+		return flight;
+	}
+
+	public void setFlight(Flight flight) {
+		this.flight = flight;
+	}
+
+	public Date getScheduledArrival() {
+		return scheduledArrival;
+	}
+
+	public void setScheduledArrival(Date scheduledArrival) {
+		this.scheduledArrival = scheduledArrival;
+	}
+
+	public Date getEstimatedDeparture() {
+		return estimatedDeparture;
+	}
+
+	public void setEstimatedDeparture(Date estimatedDeparture) {
+		this.estimatedDeparture = estimatedDeparture;
+	}
+
+	public Date getEstimatedArrival() {
+		return estimatedArrival;
+	}
+
+	public void setEstimatedArrival(Date estimatedArrival) {
+		this.estimatedArrival = estimatedArrival;
+	}
+	
 	
 	
 }
