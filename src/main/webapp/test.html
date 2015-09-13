@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
+		<!-- <meta charset="ISO-8859-1"> -->
 		<title>Insert title here</title>
 		<script type="text/Javascript" src="script/jquery-1.10.2.js"></script>
 		<script type="text/Javascript" src="script/jquery-ui.js"></script>
-		<script type="text/Javascript" src="script/controller.js"></script>		
+		<script type="text/Javascript" src="script/controller.js"></script>
+		
+		<style type="text/css">
+		
+			.photoImg{ height:15%; width:25%; }
+			
+			.icon{ height:50px; width:50px; }
+			
+			.content{ float:left; width:60%;}		
+			.photo{ width:100%;}
+			
+			#forecastList{ width:90%;display:inline;}
+			.forecast{ display:inline;}
+		</style>		
 	</head>
 
 	<body>
 
 		<input id="city" type="text" maxlength="20"/>
 		
-		<button onclick="clickEvent()">Cargar ciudad</button>
+		<div style="display:inline;">
+			<button onclick="activitiesEvent()">Cargar museos</button>
+			<button onclick="restaurantesEvent()">Cargar restaurantes</button>
+			<button onclick="weatherEvent()">Cargar predicción</button>
+		</div>
 		
-		<div id="place">
-		
-			<div>Nombre: <span id="name"></span></div>
-			<div>Dirección: <span id="address"></span></div>
-			<div>Precio: <span id="priceLevel"></span></div>
-			<div>Puntuación: <span id="rating"></span></div>
-			
-			<img id="photo" alt="Fotografia" src=""/>
+		<div id="content">		
 		</div>
 	</body>
 </html>

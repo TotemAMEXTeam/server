@@ -19,13 +19,13 @@ public class SimpleRestProvider implements RestProvider{
 	
 	public String retrieveRawInformation(String urlString) throws IOException{
 				
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
+		//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
 		URL urlObject = new URL(urlString);
 		
 		log.info("Retrieving: " + urlString);
 		
-		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
-		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
+		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
+		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setDoOutput(false);
 		connection.setDoInput(true);
@@ -54,13 +54,13 @@ public class SimpleRestProvider implements RestProvider{
 	
 	public byte[] retrieveRawImage(String urlString) throws IOException{
 		
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
+		//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("zen.es.hphis.com", 8080));		
 		URL urlObject = new URL(urlString);
 		
 		log.info("Retrieving: " + urlString);
 		
-		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
-		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
+		//HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection(proxy);
+		HttpURLConnection connection = (HttpURLConnection)urlObject.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setDoOutput(false);
 		connection.setDoInput(true);
