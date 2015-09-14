@@ -1,4 +1,4 @@
-package net.twilightstudios.amex.weather.entidad;
+package net.twilightstudios.amex.weather.entity;
 
 public class Precipitation {
 

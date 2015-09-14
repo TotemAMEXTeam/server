@@ -19,131 +19,35 @@ function restaurantesEvent(){
 	loadRestaurantes(city);
 }
 
-function retrieveWeather(city){
+
+
+function retrieveFlights(origin){
 	
 	$.ajax({
     	type: "GET",
-        url: "http://localhost:8080/server/rest/weather/retrieveForecast/" + city,        
+        url: "http://localhost:8080/server/rest/dailyFlights/" + origin,        
         dataType: 'json',
         async: false,
-        success: function(forecast){
+        success: function(flights){
         
-        	loadWeather(forecast);
+        	loadFlights(flights);
         } 
     });	
 }
 
-function loadWeather(forecast5Days){
+function loadFlights(flights){
+	
+	alert(flights[0].flightNumber);
 	
 	var placesDiv = $("#content");
 	placesDiv.empty();
 	
-	placesDiv.append("<div id=\"forecastList\"></div>");
-	placesDiv =  $("#forecastList");
+	placesDiv.append("<div id=\"flights\"></div>");
+	placesDiv =  $("#flights");
 	
-	for(var i=0;i<forecast5Days.length;i++){
+	for(var i=0;i<flights.length;i++){
 	
-		var forecast = forecast5Days[i];
-		
-		var date = new Date(parseInt(forecast.timestamp));
-		
-		placesDiv.append("<span id=" + forecast.timestamp + " class=\"forecast\"></span>");
-		
-		var activityContentDiv = $("#" + forecast.timestamp);
-		
-		activityContentDiv.append("<div>Fecha: " + date + "</div>");
-		activityContentDiv.append("<div>T. max: " + forecast.temperature.max + "</div>");
-		activityContentDiv.append("<div>T. min: " + forecast.temperature.min + "</div>");
-		activityContentDiv.append("<div>Humedad: " + forecast.humidity + "</div>");
-		activityContentDiv.append("<div>Presión: " + forecast.pressure + "</div>");
-		activityContentDiv.append("<div>Resumen: " + forecast.summary.description + "</div>");
-		activityContentDiv.append("<img src=\"http://openweathermap.org/img/w/" + forecast.summary.icon  + ".png\" class=\"icon\"/>");
+		var flight = flights[i];
+		placesDiv.append("<div id=" + flight.flightNumber + " class=\"flight\">" + flight.flightNumber + "</div>");
 	}
-}
-
-function loadMuseums(city){
-	
-	$.ajax({
-    	type: "GET",
-        url: "http://localhost:8080/server/rest/geo/locate/" + city,        
-        dataType: 'json',
-        async: false,
-        success: function(coord){
-        
-        	retrieveActivities(coord);
-        } 
-    });
-}
-
-function loadRestaurantes(city){
-	
-	$.ajax({
-    	type: "GET",
-        url: "http://localhost:8080/server/rest/geo/locate/" + city,        
-        dataType: 'json',
-        async: false,
-        success: function(coord){
-        
-        	retrieveRestaurantes(coord);
-        } 
-    });
-}
-
-function retrieveRestaurantes(coords){
-	 
-    $.ajax({
-    	type: "GET",
-        url: "http://localhost:8080/server/rest/places/restaurants/",
-        data: coords,
-        dataType: 'json',
-        async: false,
-        success: loadActivities
-    });
-}
-
-function retrieveActivities(coords){
- 
-    $.ajax({
-    	type: "GET",
-        url: "http://localhost:8080/server/rest/places/activities/",
-        data: coords,
-        dataType: 'json',
-        async: false,
-        success: loadActivities
-    });
-}
-
-function loadActivities(data){
-	
-	var placesDiv = $("#content");
-	placesDiv.empty();
-	
-	for(var i=0;i<data.length;i++){
-	
-		var activity = data[i];
-
-		placesDiv.append("<div id=" + activity.id + " class=\"activity\"><div id=contentDiv" + activity.id + " class=\"content\"></div><div id=photoDiv" + activity.id + " class=\"photo\"></div></div>");
-		
-		var activityContentDiv = $("#contentDiv" + activity.id);
-		
-		activityContentDiv.append("<div>Nombre: " + activity.name + "</div>");
-		activityContentDiv.append("<div>Dirección: " + activity.addressString + "</div>");
-		activityContentDiv.append("<div>Precio: " + activity.priceLevel + "</div>");
-		activityContentDiv.append("<div>Puntuación: " + activity.rating + "</div>");
-		
-		if(activity.photoId != null){
-		
-			var activityPhotoDiv = $("#photoDiv" + activity.id);		
-			activityPhotoDiv.append("<img id=photo" + activity.id + " src=\"http://localhost:8080/server/rest/places/image/" + activity.photoId  + "\" class=\"photoImg\"/>");
-		}
-	}
-	
-	
-	
-	
-	
-	
-	//<img id="photo" alt="Fotografia" src=""/>
-	
-	//
 }

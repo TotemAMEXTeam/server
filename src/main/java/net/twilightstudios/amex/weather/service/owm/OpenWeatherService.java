@@ -13,11 +13,11 @@ import java.util.List;
 
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
-import net.twilightstudios.amex.weather.entidad.Forecast;
-import net.twilightstudios.amex.weather.entidad.Precipitation;
-import net.twilightstudios.amex.weather.entidad.Summary;
-import net.twilightstudios.amex.weather.entidad.Temperature;
-import net.twilightstudios.amex.weather.entidad.Wind;
+import net.twilightstudios.amex.weather.entity.Forecast;
+import net.twilightstudios.amex.weather.entity.Precipitation;
+import net.twilightstudios.amex.weather.entity.Summary;
+import net.twilightstudios.amex.weather.entity.Temperature;
+import net.twilightstudios.amex.weather.entity.Wind;
 import net.twilightstudios.amex.weather.service.WeatherService;
 
 import org.json.JSONArray;
@@ -138,6 +138,9 @@ public class OpenWeatherService implements WeatherService {
 		Forecast referencia = null;
 		
 		Precipitation precipitation = new Precipitation();
+		precipitation.setRain(0);
+		precipitation.setSnow(0);
+		
 		Temperature temperature = new Temperature();
 		temperature.setMin(Double.MAX_VALUE);
 		temperature.setMax(Double.MIN_VALUE);
@@ -165,15 +168,8 @@ public class OpenWeatherService implements WeatherService {
 				temperature.setMax(forecast.getTemperature().getMax());
 			}
 			
-			if(forecast.getPrecipitation().getRain() > precipitation.getRain()){
-				
-				precipitation.setRain(forecast.getPrecipitation().getRain());
-			}
-			
-			if(forecast.getPrecipitation().getSnow() > precipitation.getSnow()){
-				
-				precipitation.setSnow(forecast.getPrecipitation().getSnow());
-			}
+			precipitation.setRain(precipitation.getRain() + forecast.getPrecipitation().getRain());			
+			precipitation.setSnow(precipitation.getSnow() + forecast.getPrecipitation().getSnow());
 		}
 		
 		if(referencia == null){

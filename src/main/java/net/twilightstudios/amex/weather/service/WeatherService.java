@@ -3,7 +3,7 @@ package net.twilightstudios.amex.weather.service;
 import java.io.IOException;
 import java.util.List;
 
-import net.twilightstudios.amex.weather.entidad.Forecast;
+import net.twilightstudios.amex.weather.entity.Forecast;
 
 import org.json.JSONException;
 
