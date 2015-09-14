@@ -2,7 +2,6 @@ package net.twilightstudios.amex.flight.service.aena;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.CookieHandler;
@@ -10,7 +9,6 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,8 +87,98 @@ public class AenaHTMLFlightService implements FlightService {
 	private String responseFlightsListTdDepartureDate;
 	private String responseFlightsListTdDepartureOriginSub;
 	private String responseFlightsListTdDepartureOriginSubData;
-
+	private String responseFlightsListPageRegExp;
+	private String responseFlightsListReducedPageRegExp;
+	private List<String> postParametersList;
+	private String httpSessionIdValuedParameter;
+	private String scriptSessionIdValuedParameter;
+	private String airportValuedParameter;
+	private String pageValuedParameter;
+	private String urlPagedValueParameter;
 	
+	
+	public String getUrlPagedValueParameter() {
+		return urlPagedValueParameter;
+	}
+
+
+	public void setUrlPagedValueParameter(String urlPagedValueParameter) {
+		this.urlPagedValueParameter = urlPagedValueParameter;
+	}
+
+
+	public String getHttpSessionIdValuedParameter() {
+		return httpSessionIdValuedParameter;
+	}
+
+
+	public void setHttpSessionIdValuedParameter(String httpSessionIdValuedParameter) {
+		this.httpSessionIdValuedParameter = httpSessionIdValuedParameter;
+	}
+
+
+	public String getScriptSessionIdValuedParameter() {
+		return scriptSessionIdValuedParameter;
+	}
+
+
+	public void setScriptSessionIdValuedParameter(
+			String scriptSessionIdValuedParameter) {
+		this.scriptSessionIdValuedParameter = scriptSessionIdValuedParameter;
+	}
+
+
+	public String getAirportValuedParameter() {
+		return airportValuedParameter;
+	}
+
+
+	public void setAirportValuedParameter(String airportValuedParameter) {
+		this.airportValuedParameter = airportValuedParameter;
+	}
+
+
+	public String getPageValuedParameter() {
+		return pageValuedParameter;
+	}
+
+
+	public void setPageValuedParameter(String pageValuedParameter) {
+		this.pageValuedParameter = pageValuedParameter;
+	}
+
+
+	public List<String> getPostParametersList() {
+		return postParametersList;
+	}
+
+
+	public void setPostParametersList(List<String> postParametersList) {
+		this.postParametersList = postParametersList;
+	}
+
+
+	public String getResponseFlightsListReducedPageRegExp() {
+		return responseFlightsListReducedPageRegExp;
+	}
+
+
+	public void setResponseFlightsListReducedPageRegExp(
+			String responseFlightsListReducedPageRegExp) {
+		this.responseFlightsListReducedPageRegExp = responseFlightsListReducedPageRegExp;
+	}
+
+
+	public String getResponseFlightsListPageRegExp() {
+		return responseFlightsListPageRegExp;
+	}
+
+
+	public void setResponseFlightsListPageRegExp(
+			String responseFlightsListPageRegExp) {
+		this.responseFlightsListPageRegExp = responseFlightsListPageRegExp;
+	}
+
 
 	public String getResponseFlightsListTdDepartureOriginSubData() {
 		return responseFlightsListTdDepartureOriginSubData;
@@ -646,7 +733,7 @@ public class AenaHTMLFlightService implements FlightService {
 			status.setEstimatedDeparture(estimatedDate);
 			
 			Status flightCurrentStatus = processStatus(statusToProcess, scheduledDate, estimatedDate);
-			if (status != null) {
+			if (flightCurrentStatus != null) {
 				status.setStatus(flightCurrentStatus);
 			}
 			else {
@@ -787,7 +874,7 @@ public class AenaHTMLFlightService implements FlightService {
 			}
 			else {
 				Pattern canceledPattern = Pattern.compile(responseStatusCanceledData);
-				Matcher canceledMatcher = anotherPattern.matcher(statusToProcess);
+				Matcher canceledMatcher = canceledPattern.matcher(statusToProcess);
 				if (canceledMatcher.find()) {
 					return Status.CANCELED;
 				}
@@ -811,7 +898,7 @@ public class AenaHTMLFlightService implements FlightService {
 		List<Flight> result = new ArrayList<Flight>();
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(urlDailyFlights);
+		sb.append(url);
 		sb.append('?');
 		sb.append(airportCodeParameter);
 		sb.append('=');
@@ -839,66 +926,6 @@ public class AenaHTMLFlightService implements FlightService {
 		}
 		
 		Document document = Jsoup.parse(connection.getInputStream(), sourceCharset, "");		
-		List<Flight> accum = parseHTMLFlightsList(document, airport);
-		result.addAll(accum);
-		
-		int page = 0;
-		boolean lastPage = false;
-		while (!lastPage) {
-			urlObject = new URL("http://www.aena.es/csee/dwr/call/plaincall/VTR2FiltroService.getResultadoFiltro.dwr");
-			connection = (HttpURLConnection)urlObject.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
-			connection.connect();
-			
-			try(PrintWriter writer = new PrintWriter(connection.getOutputStream())){
-	
-				writer.println("callCount=1");
-				writer.println("page=/csee/Satellite/infovuelos/es/?origin_ac=" + airport + "&mov=S");
-				writer.println("httpSessionId=" + jSessionId);
-				writer.println("scriptSessionId=E49A6760293267C1205A1C91B3EB7101578");
-				writer.println("c0-scriptName=VTR2FiltroService");
-				writer.println("c0-methodName=getResultadoFiltro");
-				writer.println("c0-id=0");
-				writer.println("c0-e1=string:S");
-				writer.println("c0-e2=string:" + airport);
-				writer.println("c0-e3=string:");
-				writer.println("c0-e4=string:0");
-				writer.println("c0-e5=string:1440");
-				writer.println("c0-e6=null:null");
-				writer.println("c0-e7=null:null");
-				writer.println("c0-e8=null:null");
-				writer.println("c0-e9=string:" + page);
-				writer.println("c0-param0=Object_Object:{movimiento:reference:c0-e1, origen:reference:c0-e2, destino:reference:c0-e3, franjaIni:reference:c0-e4, franjaFin:reference:c0-e5, cias:reference:c0-e6, terminales:reference:c0-e7, destinos:reference:c0-e8, pagina:reference:c0-e9}");
-				writer.println("batchId=0");
-				
-			}
-			
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
-				
-				String line;
-				while((line = in.readLine()) != null){
-				
-					if(line.contains("s0.siguiente=false")){
-						
-						lastPage = true;
-					}
-					else{
-						System.out.println(line);
-					}
-				}
-			}
-			
-			page++;
-		}
-		
-		
-		return result;
-	}
-	
-	private List<Flight> parseHTMLFlightsList (Document document, String airport) throws ParseException {
-	
 		List<Flight> res = new ArrayList<Flight>();
 		
 		Elements flightListElements = document.select(responseFlightsListDivId);
@@ -907,10 +934,10 @@ public class AenaHTMLFlightService implements FlightService {
 		String date = flightListElements.select(responseFlightsListTdDepartureDate).first().text();
 		Element origin = document.select(responseFlightsListTdDepartureOrigin).first();
 		String originValue = origin.select(responseFlightsListTdDepartureOriginSub).first().text();
-		StringBuilder sb = new StringBuilder();
-		sb.append(responseFlightsListTdDepartureOriginSubData);
-		sb.append("(.*)");
-		Pattern pattern = Pattern.compile(sb.toString());
+		StringBuilder stb = new StringBuilder();
+		stb.append(responseFlightsListTdDepartureOriginSubData);
+		stb.append("(.*)");
+		Pattern pattern = Pattern.compile(stb.toString());
 		Matcher matcher = pattern.matcher(originValue);
 		String originAirport = null;
 		if (matcher.find()) {
@@ -941,7 +968,96 @@ public class AenaHTMLFlightService implements FlightService {
 			flight.setOrigin(originAirport);
 			res.add(flight);
 		}
-		return res;
+		result.addAll(res);
+		
+		int page = 1;
+		boolean lastPage = false;
+		while (!lastPage) {
+			urlObject = new URL(urlDailyFlights);
+			connection = (HttpURLConnection)urlObject.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.connect();
+			
+			try(PrintWriter writer = new PrintWriter(connection.getOutputStream())){	
+				for (String s: postParametersList) {
+					if (s.equals(httpSessionIdValuedParameter+"=")) {
+						writer.println(s + jSessionId);
+					}
+					else if (s.equals(scriptSessionIdValuedParameter+"=")){
+						writer.println(scriptSessionIdValuedParameter + "="+(int)(Math.random()));
+					}
+					else if (s.equals(airportValuedParameter)){
+						writer.println(s + airport);
+					}
+					else if (s.equals(pageValuedParameter)){
+						writer.println(s + page);
+					}
+					else if (s.contains(urlPagedValueParameter)) {
+						writer.println("page="+urlPagedValueParameter+'?'+movParameter+"=S&"+airportCodeParameter+'=');
+					}
+					else {
+						writer.println(s);
+					}
+				}			
+			}
+			
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){		
+				String line;
+				String dest = null;
+				Date dat = null;
+				while((line = in.readLine()) != null){			
+					if(line.contains("s0.siguiente=false")){					
+						lastPage = true;
+					}
+					else{
+						Pattern patternReg = Pattern.compile(responseFlightsListPageRegExp);
+						Matcher matcherReg = patternReg.matcher(line);
+						Flight flight = new Flight();
+						if (matcherReg.matches()) {
+							String compId = matcherReg.group(1);
+							String flightId = matcherReg.group(6);
+							StringBuilder stbl = new StringBuilder();
+							stbl.append(compId);
+							stbl.append(flightId);
+							flight.setFlightNumber(stbl.toString());
+							flight.setCompany(matcherReg.group(2));
+							dest = matcherReg.group(3);
+							flight.setDestiny(dest);
+							flight.setOrigin(originAirport);
+							DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							StringBuilder sbd = new StringBuilder();
+							sbd.append(matcherReg.group(4));
+							sbd.append(' ');
+							sbd.append(matcherReg.group(5));
+							sbd.append(":00");
+							dat = sdf.parse(sbd.toString());
+							flight.setScheduledDeparture(dat);
+							result.add(flight);
+						}
+						else {
+							Pattern patternRegExp = Pattern.compile(responseFlightsListReducedPageRegExp);
+							Matcher matcherRegExp = patternRegExp.matcher(line);
+							if (matcherRegExp.matches()) {
+								flight.setScheduledDeparture(dat);
+								flight.setDestiny(dest);
+								flight.setOrigin(originAirport);
+								flight.setCompany(matcherRegExp.group(2));
+								StringBuilder sbld = new StringBuilder();
+								sbld.append(matcherRegExp.group(1));
+								sbld.append(matcherRegExp.group(3));
+								flight.setFlightNumber(sbld.toString());
+								result.add(flight);
+							}						
+						}
+					}
+				}
+			}
+			page++;
+		}
+		
+		return result;
 	}
 	
 }

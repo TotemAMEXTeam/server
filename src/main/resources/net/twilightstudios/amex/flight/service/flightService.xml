@@ -3,48 +3,86 @@
 
 <beans default-lazy-init="true">
 
-	<bean id="flightService" class="net.twilightstudios.amex.flight.service.aena.AenaHTMLFlightService">
-		<property name="url" value="http://www.aena.es/csee/Satellite/infovuelos/es/"/>
-		<property name="sourceCharset" value="UTF-8"/>
-		<property name="flightCompanyParameter" value="company"/>
-		<property name="flightIdParameter" value="nvuelo"/>
-		<property name="flightDateParameter" value="hprevista"/>
-		<property name="responseStatusScheduledData" value="Salida prevista a las"/>
-		<property name="responseStatusArrivalData" value="Llegada prevista a las"/>
-		<property name="responseStatusOnFlightData" value="El vuelo ha despegado a las"/>
-		<property name="responseStatusLandedData" value="El vuelo ha aterrizado a las"/>
-		<property name="responseStatusCanceledData" value="cancelado"/>
-		<property name="responseFlightDataDivId" value="div#principalContentFicha_1024"/>
-		<property name="responseFlightDataTdDepartureDate" value="td[headers=fecha1 origen]"/>
-		<property name="responseFlightDataTdDepartureTime" value="td[headers=salida1 origen]"/>
-		<property name="responseFlightDataTdDepartureTerminal" value="td[headers=terminal1 origen]"/>
-		<property name="responseFlightDataTdDepartureDesk" value="td[headers=mostrador1 origen]"/>
-		<property name="responseFlightDataTdDepartureGate" value="td[headers=cinta1 origen]"/>
-		<property name="responseFlightDataTdState" value="td[headers=estado1 origen]"/>
-		<property name="responseFlightDataSpanRoute" value="span.trayecto"/>
-		<property name="responseFlightDataTdArrivalDate" value="td[headers=fecha2 destino]"/>
-		<property name="responseFlightDataTdArrivalTime" value="td[headers=salida2 destino]"/>
-		<property name="responseFlightDataTdArrivalTerminal" value="td[headers=terminal2 destino]"/>
-		<property name="responseFlightDataTdArrivalHall" value="td[headers=sala2 destino]"/>
-		<property name="responseFlightDataTdArrivalBelt" value="td[headers=cinta2 destino]"/>
-		<property name="responseFlightDataTdArrivalState" value="td[headers=estado2 destino]"/>
-		<property name="responseCompanyDataDivId" value="div.companiaFicha"/>
-		<property name="responseCompanyDataSpanName" value="dd"/>
-		<property name="urlDailyFlights" value="http://www.aena.es/csee/Satellite/infovuelos/es/"/>
-		<property name="airportCodeParameter" value="origin_ac"/>
-		<property name="movParameter" value="mov"/>
-		<property name="responseFlightsListDivId" value="div#flightResults"/>
-		<property name="responseFlightsListsTableClass" value="table[class=gnr_tb1]"/>
-		<property name="htmlTableRows" value="tr"/>
-		<property name="htmlTableCells" value="td"/>
-		<property name="responseFlightsListTdDepartureTime" value="td[headers=hora_0]"/>
-		<property name="responseFlightsListTdDepartureFlight" value="td[headers=vuelo_0]"/>
-		<property name="responseFlightsListTdDepartureDestiny" value="td[headers=destino_0]"/>
-		<property name="responseFlightsListTdDepartureCompany" value="td[headers=cia_0]"/>
-		<property name="responseFlightsListTdDepartureOrigin" value="div.headerVuelo"/>
-		<property name="responseFlightsListTdDepartureDate" value="caption.dateFlight"/>
-		<property name="responseFlightsListTdDepartureOriginSub" value="h3"/>
-		<property name="responseFlightsListTdDepartureOriginSubData" value="Salidas de "/>
+	<bean id="flightService"
+		class="net.twilightstudios.amex.flight.service.aena.AenaHTMLFlightService">
+		<property name="url"
+			value="http://www.aena.es/csee/Satellite/infovuelos/es/" />
+		<property name="sourceCharset" value="UTF-8" />
+		<property name="flightCompanyParameter" value="company" />
+		<property name="flightIdParameter" value="nvuelo" />
+		<property name="flightDateParameter" value="hprevista" />
+		<property name="responseStatusScheduledData" value="Salida prevista a las" />
+		<property name="responseStatusArrivalData" value="Llegada prevista a las" />
+		<property name="responseStatusOnFlightData" value="El vuelo ha despegado a las" />
+		<property name="responseStatusLandedData" value="El vuelo ha aterrizado a las" />
+		<property name="responseStatusCanceledData" value="cancelado" />
+		<property name="responseFlightDataDivId" value="div#principalContentFicha_1024" />
+		<property name="responseFlightDataTdDepartureDate" value="td[headers=fecha1 origen]" />
+		<property name="responseFlightDataTdDepartureTime" value="td[headers=salida1 origen]" />
+		<property name="responseFlightDataTdDepartureTerminal" value="td[headers=terminal1 origen]" />
+		<property name="responseFlightDataTdDepartureDesk" value="td[headers=mostrador1 origen]" />
+		<property name="responseFlightDataTdDepartureGate" value="td[headers=cinta1 origen]" />
+		<property name="responseFlightDataTdState" value="td[headers=estado1 origen]" />
+		<property name="responseFlightDataSpanRoute" value="span.trayecto" />
+		<property name="responseFlightDataTdArrivalDate" value="td[headers=fecha2 destino]" />
+		<property name="responseFlightDataTdArrivalTime" value="td[headers=salida2 destino]" />
+		<property name="responseFlightDataTdArrivalTerminal" value="td[headers=terminal2 destino]" />
+		<property name="responseFlightDataTdArrivalHall" value="td[headers=sala2 destino]" />
+		<property name="responseFlightDataTdArrivalBelt" value="td[headers=cinta2 destino]" />
+		<property name="responseFlightDataTdArrivalState" value="td[headers=estado2 destino]" />
+		<property name="responseCompanyDataDivId" value="div.companiaFicha" />
+		<property name="responseCompanyDataSpanName" value="dd" />
+		<property name="urlDailyFlights"
+			value="http://www.aena.es/csee/dwr/call/plaincall/VTR2FiltroService.getResultadoFiltro.dwr" />
+		<property name="airportCodeParameter" value="origin_ac" />
+		<property name="movParameter" value="mov" />
+		<property name="responseFlightsListDivId" value="div#flightResults" />
+		<property name="responseFlightsListsTableClass" value="table[class=gnr_tb1]" />
+		<property name="htmlTableRows" value="tr" />
+		<property name="htmlTableCells" value="td" />
+		<property name="responseFlightsListTdDepartureTime" value="td[headers=hora_0]" />
+		<property name="responseFlightsListTdDepartureFlight" value="td[headers=vuelo_0]" />
+		<property name="responseFlightsListTdDepartureDestiny" value="td[headers=destino_0]" />
+		<property name="responseFlightsListTdDepartureCompany" value="td[headers=cia_0]" />
+		<property name="responseFlightsListTdDepartureOrigin" value="div.headerVuelo" />
+		<property name="responseFlightsListTdDepartureDate" value="caption.dateFlight" />
+		<property name="responseFlightsListTdDepartureOriginSub"
+			value="h3" />
+		<property name="responseFlightsListTdDepartureOriginSubData"
+			value="Salidas de " />
+		<property name="responseFlightsListPageRegExp">
+			<value><![CDATA[.*cod_cia.*=\"(\w+)\";.*compania.*=\"(.*)\";.*destino=\"(.*)\";.*fechaVuelo=\"(\d\d\d\d-\d\d-\d\d)\";.*hora=\"(\d\d:\d\d)\";.*nvuelo=\"(\d+)\";.*]]></value>
+		</property>
+		<property name="responseFlightsListReducedPageRegExp">
+			<value><![CDATA[.*\.cia=\"(.*)\";.*\.ncia=\"(.*)\".*nvuelo=\"(\d+)\";]]></value>
+		</property>
+		<property name="postParametersList">
+			<list>
+				<value>callCount=1</value>
+				<value><![CDATA[page=/csee/Satellite/infovuelos/es/?mov=S&origin_ac=]]></value>
+				<value>httpSessionId=</value>
+				<value>scriptSessionId=</value>
+				<value>c0-scriptName=VTR2FiltroService</value>
+				<value>c0-methodName=getResultadoFiltro</value>
+				<value>c0-id=0</value>
+				<value>c0-e1=string:S</value>
+				<value>c0-e2=string:</value>
+				<value>c0-e3=string:</value>
+				<value>c0-e4=string:0</value>
+				<value>c0-e5=string:1440</value>
+				<value>c0-e6=null:null</value>
+				<value>c0-e7=null:null</value>
+				<value>c0-e8=null:null</value>
+				<value>c0-e9=string:</value>
+				<value>c0-param0=Object_Object:{movimiento:reference:c0-e1,origen:reference:c0-e2,destino:reference:c0-e3,franjaIni:reference:c0-e4,franjaFin:reference:c0-e5,cias:reference:c0-e6, terminales:reference:c0-e7,destinos:reference:c0-e8, pagina:reference:c0-e9}</value>
+				<value>batchId=0</value>
+			</list>
+		</property>
+		<property name="httpSessionIdValuedParameter" value="httpSessionId"/>
+		<property name="scriptSessionIdValuedParameter" value="scriptSessionId"/>
+		<property name="airportValuedParameter" value="c0-e2=string:"/>
+		<property name="pageValuedParameter" value="c0-e9=string:"/>
+		<property name="urlPagedValueParameter" value="page=/csee/Satellite/infovuelos/es/"/>
 	</bean>
 
 </beans>
