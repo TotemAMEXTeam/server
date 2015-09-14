@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 
-import net.twilightstudios.amex.weather.entidad.Forecast;
+import net.twilightstudios.amex.weather.entity.Forecast;
 import net.twilightstudios.amex.weather.service.WeatherService;
 
 import org.json.JSONException;

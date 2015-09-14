@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -34,7 +35,7 @@ public class SimpleRestProvider implements RestProvider{
 		
 		StringBuilder builder = new StringBuilder();
 		
-		try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+		try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(),Charset.forName("UTF-8")))){
 								
 			String line;				
 			while((line = in.readLine()) != null){

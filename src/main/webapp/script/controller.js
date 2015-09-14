@@ -1,57 +1,53 @@
-function clickEvent(){
+function weatherEvent(){
+
+	var city = $("#city").val();
+	
+	retrieveWeather(city);
+}
+
+function activitiesEvent(){
 	
 	var city = $("#city").val();
 	
-	loadCity(city);
+	loadMuseums(city);
 }
 
-function loadCity(city){
+function restaurantesEvent(){
+	
+	var city = $("#city").val();
+	
+	loadRestaurantes(city);
+}
+
+
+
+function retrieveFlights(origin){
 	
 	$.ajax({
     	type: "GET",
-        url: "http://localhost:8080/server/rest/geo/locate/" + city,        
+        url: "http://localhost:8080/server/rest/dailyFlights/" + origin,        
         dataType: 'json',
         async: false,
-        success: function(coord){
+        success: function(flights){
         
-        	retrieveActivities(coord);
+        	loadFlights(flights);
         } 
-    });
+    });	
 }
 
-function retrieveActivities(coords){
- 
-    $.ajax({
-    	type: "GET",
-        url: "http://localhost:8080/server/rest/places/activities/",
-        data: coords,
-        dataType: 'json',
-        async: false,
-        success: loadActivities
-    });
-}
-
-function loadActivities(data){
+function loadFlights(flights){
 	
-	if(data.length == 0){
-		
-		return;
+	alert(flights[0].flightNumber);
+	
+	var placesDiv = $("#content");
+	placesDiv.empty();
+	
+	placesDiv.append("<div id=\"flights\"></div>");
+	placesDiv =  $("#flights");
+	
+	for(var i=0;i<flights.length;i++){
+	
+		var flight = flights[i];
+		placesDiv.append("<div id=" + flight.flightNumber + " class=\"flight\">" + flight.flightNumber + "</div>");
 	}
-
-	var index = 0;	
-	while(index < data.length && data[index].photoId == null){}
-	
-	if(index == data.length && data.length > 0){
-		
-		index = 0;
-	}
-		
-	var activity = data[index];
-	
-	$("#name").text(activity.name);
-	$("#address").text(activity.addressString);
-	$("#priceLevel").text(activity.priceLevel);
-	$("#rating").text(activity.rating);
-	
-	$("#photo").attr("src", "http://localhost:8080/server/rest/places/image/" + activity.photoId);
 }

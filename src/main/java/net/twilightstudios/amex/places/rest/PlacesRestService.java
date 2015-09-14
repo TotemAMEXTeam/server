@@ -29,7 +29,7 @@ public class PlacesRestService {
 		this.placesService = placesService;
 	}
 	
-	@RequestMapping(value="/restaurants", method=RequestMethod.GET, produces={"application/json"})
+	@RequestMapping(value="/restaurants", method=RequestMethod.GET, produces={"application/json;charset:UTF-8"})
 	public List<Place> retrieveRestaurants(Coordinates coord) throws IOException, JSONException {
 		try {
 			return placesService.retrieveRestaurants(coord);
@@ -38,7 +38,7 @@ public class PlacesRestService {
 		}
 	}
 	
-	@RequestMapping(value="/activities", method=RequestMethod.GET, produces={"application/json"})
+	@RequestMapping(value="/activities", method=RequestMethod.GET, produces={"application/json;charset:UTF-8"})
 	public List<Place> retrieveActivities(Coordinates coord) throws IOException, JSONException {
 		try {
 			return placesService.retrieveActivities(coord);

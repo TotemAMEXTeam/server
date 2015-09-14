@@ -20,6 +20,8 @@
         <property name="urlForecast">
             <value>http://api.openweathermap.org/data/2.5/forecast</value>
         </property>
+        
+        <property name="language"><value>es</value></property>
     </bean>
     
     <bean id="restProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>    

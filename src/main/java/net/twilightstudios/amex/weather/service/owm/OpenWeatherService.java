@@ -8,15 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
-import net.twilightstudios.amex.weather.entidad.Forecast;
-import net.twilightstudios.amex.weather.entidad.Precipitation;
-import net.twilightstudios.amex.weather.entidad.Summary;
-import net.twilightstudios.amex.weather.entidad.Temperature;
-import net.twilightstudios.amex.weather.entidad.Wind;
+import net.twilightstudios.amex.weather.entity.Forecast;
+import net.twilightstudios.amex.weather.entity.Precipitation;
+import net.twilightstudios.amex.weather.entity.Summary;
+import net.twilightstudios.amex.weather.entity.Temperature;
+import net.twilightstudios.amex.weather.entity.Wind;
 import net.twilightstudios.amex.weather.service.WeatherService;
 
 import org.json.JSONArray;
@@ -27,6 +28,7 @@ public class OpenWeatherService implements WeatherService {
 
 	private final String appKey;
 	
+	private String language;
 	private String url;
 	private String urlForecast; 
 	
@@ -44,6 +46,8 @@ public class OpenWeatherService implements WeatherService {
 		StringBuilder urlString = new StringBuilder(url);
 		urlString.append("?q=");
 		urlString.append(URLEncoder.encode(city, "UTF-8"));
+		urlString.append("&lang=");
+		urlString.append(language);
 		urlString.append("&APPID=");
 		urlString.append(appKey);
 		
@@ -65,6 +69,8 @@ public class OpenWeatherService implements WeatherService {
 		StringBuilder urlString = new StringBuilder(urlForecast);
 		urlString.append("?q=");
 		urlString.append(URLEncoder.encode(city, "UTF-8"));
+		urlString.append("&lang=");
+		urlString.append(language);
 		urlString.append("&APPID=");
 		urlString.append(appKey);
 		
@@ -76,27 +82,115 @@ public class OpenWeatherService implements WeatherService {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         JSONArray list = json.getJSONArray("list");
         List<Forecast> resultado = new ArrayList<Forecast>(list.length());
+        int lastDay = 0;
+        List<Forecast> dayForecasts = new LinkedList<Forecast>();
         for(int i=0;i<list.length();i++){
         	
         	JSONObject obj = list.getJSONObject(i);
         	Forecast forecast = buildForecast(obj);
         	forecast.setCity(city);
         	
+        	Date date;
+        	Calendar calendar = Calendar.getInstance();
+        	
         	try{
-        		forecast.setTimestamp(df.parse(obj.getString("dt_txt")));
+        		date = df.parse(obj.getString("dt_txt"));
+        		calendar.setTime(date);
         	}
         	catch(ParseException e){
-        	
-        		Calendar calendar = Calendar.getInstance();
-        		calendar.add(Calendar.DAY_OF_MONTH, i);
         		
-        		forecast.setTimestamp(calendar.getTime());
+        		calendar.add(Calendar.DAY_OF_MONTH, i);
+        		date = calendar.getTime();
         	}
         	
-        	resultado.add(forecast);
+        	forecast.setTimestamp(date);
+        	
+        	if(lastDay != calendar.get(Calendar.DAY_OF_MONTH)){
+        		
+        		lastDay = calendar.get(Calendar.DAY_OF_MONTH);
+        		
+        		if(!dayForecasts.isEmpty()){
+        			
+        			resultado.add(groupForecastList(dayForecasts));
+        			dayForecasts = new LinkedList<Forecast>();
+        		}
+        	}
+        	
+        	dayForecasts.add(forecast);
         }
         
+        if(!dayForecasts.isEmpty()){
+			
+			resultado.add(groupForecastList(dayForecasts));
+		}
+        
         return resultado;
+	}
+	
+	private Forecast groupForecastList(List<Forecast> forecasts){
+		
+		if(forecasts.isEmpty()){
+		
+			return null;
+		}
+		
+		Forecast resultado = new Forecast();
+		Forecast referencia = null;
+		
+		Precipitation precipitation = new Precipitation();
+		precipitation.setRain(0);
+		precipitation.setSnow(0);
+		
+		Temperature temperature = new Temperature();
+		temperature.setMin(Double.MAX_VALUE);
+		temperature.setMax(Double.MIN_VALUE);
+		
+		for(Forecast forecast:forecasts){
+			
+			if(referencia == null){
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(forecast.getTimestamp());
+				
+				if(calendar.get(Calendar.HOUR_OF_DAY) == 12){
+					
+					referencia = forecast;
+				}
+			}
+			
+			if(forecast.getTemperature().getMin() < temperature.getMin()){
+				
+				temperature.setMin(forecast.getTemperature().getMin());
+			}
+			
+			if(forecast.getTemperature().getMax() > temperature.getMax()){
+				
+				temperature.setMax(forecast.getTemperature().getMax());
+			}
+			
+			precipitation.setRain(precipitation.getRain() + forecast.getPrecipitation().getRain());			
+			precipitation.setSnow(precipitation.getSnow() + forecast.getPrecipitation().getSnow());
+		}
+		
+		if(referencia == null){
+		
+			referencia = forecasts.get(0);
+		}
+		
+		resultado.setCity(referencia.getCity());
+		resultado.setCloudiness(referencia.getCloudiness());
+		resultado.setHumidity(referencia.getHumidity());
+		resultado.setPressure(referencia.getPressure());
+		resultado.setSummary(referencia.getSummary());
+		resultado.setTimestamp(referencia.getTimestamp());
+		resultado.setWind(referencia.getWind());
+
+		temperature.setActual(referencia.getTemperature().getActual());
+		
+		resultado.setPrecipitation(precipitation);
+		resultado.setTemperature(temperature);
+		
+		return resultado;
 	}
 	
 	private Forecast buildForecast(JSONObject json) throws JSONException{
@@ -214,6 +308,14 @@ public class OpenWeatherService implements WeatherService {
 
 	public void setRestProvider(RestProvider restProvider) {
 		this.restProvider = restProvider;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 	
 }

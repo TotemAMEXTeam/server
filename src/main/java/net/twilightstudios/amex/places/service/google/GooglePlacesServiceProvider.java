@@ -117,6 +117,11 @@ public class GooglePlacesServiceProvider implements PlacesServiceProvider {
 			place.setPhone(result.getString("formatted_phone_number"));			
 		}
 		
+		if(result.has("formatted_address")){
+			
+			place.setAddressString(result.getString("formatted_address"));
+		}
+		
 		if(result.has("opening_hours")){
 			
 			OpeningDays days = new OpeningDays();
