@@ -32,6 +32,10 @@
 		</property>
 	</bean>
 	
+	<bean id="languageRestService" class="net.twilightstudios.amex.language.rest.LanguageRestService">
+		<property name="languageService" ref="languageService"/>
+	</bean>
+	
 	<bean id="placesRestService"
 		class="net.twilightstudios.amex.places.rest.PlacesRestService">
 		<property name="placesService">

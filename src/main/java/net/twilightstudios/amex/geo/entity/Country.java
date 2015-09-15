@@ -5,6 +5,7 @@ public class Country {
 	private Long id;
 	private String name;
 	private String standardCode;
+	private String language;
 	
 	public Long getId() {
 		return id;
@@ -23,5 +24,11 @@ public class Country {
 	}
 	public void setStandardCode(String standardCode) {
 		this.standardCode = standardCode;
-	}	
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 }

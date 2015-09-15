@@ -1,8 +1,9 @@
-package net.twilightstudios.amex.geo.entity;
+package net.twilightstudios.amex.language.entity;
 
 public class Language {
 
 	private Long id;
+	private String standardCode;
 	private String description;
 	
 	
@@ -11,6 +12,13 @@ public class Language {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getStandardCode() {
+		return standardCode;
+	}
+	public void setStandardCode(String standardCode) {
+		this.standardCode = standardCode;
 	}
 	public String getDescription() {
 		return description;

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.ws.rs.WebApplicationException;
 
+import net.twilightstudios.amex.geo.entity.Country;
 import net.twilightstudios.amex.geo.service.GeolocationService;
 import net.twilightstudios.amex.places.entity.Coordinates;
 
@@ -29,7 +30,7 @@ public class GeolocationRestService {
 	}
 	
 	@RequestMapping(value="/locate/{city}", method=RequestMethod.GET, produces={"application/json"})
-	public Coordinates retrieveMap(@RequestParam(required=false) String country,@PathVariable String city) throws IOException, JSONException {
+	public Coordinates retrieveCoordinates(@RequestParam(required=false) String country,@PathVariable String city) throws IOException, JSONException {
 		try {
 			return geolocationService.geolocateCity(city, country);			
 		} catch (Exception e) {
@@ -37,4 +38,12 @@ public class GeolocationRestService {
 		}
 	}
 	
+	@RequestMapping(value="/country/", method=RequestMethod.GET, produces={"application/json"})
+	public Country retrieveCountry(@RequestParam String city) throws IOException, JSONException {
+		try {
+			return geolocationService.getCountry(city);			
+		} catch (Exception e) {
+			 throw new WebApplicationException(e);
+		}
+	}
 }

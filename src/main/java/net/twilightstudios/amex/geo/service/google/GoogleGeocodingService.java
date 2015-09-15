@@ -3,7 +3,10 @@ package net.twilightstudios.amex.geo.service.google;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import net.twilightstudios.amex.geo.dao.CountryDao;
+import net.twilightstudios.amex.geo.entity.Country;
 import net.twilightstudios.amex.geo.service.GeolocationService;
+import net.twilightstudios.amex.language.entity.Language;
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.rest.service.ApiKeyProvider;
 import net.twilightstudios.amex.rest.service.RestProvider;
@@ -16,7 +19,8 @@ public class GoogleGeocodingService implements GeolocationService {
 
 	private String url;
 	private final String apiKey;
-
+	private CountryDao countryDao; 
+	
 	private RestProvider restProvider;
 	
 	public GoogleGeocodingService(ApiKeyProvider apiKeyProvider) {
@@ -24,6 +28,7 @@ public class GoogleGeocodingService implements GeolocationService {
 		this.apiKey = apiKeyProvider.getApiKey();
 	}
 
+	@Override
 	public Coordinates geolocateCity(String cityName, String country) throws IOException, JSONException {
 
 		JSONObject json = retrieveRawGeocode(cityName, country);		
@@ -38,6 +43,35 @@ public class GoogleGeocodingService implements GeolocationService {
 		return result;
 	}
 
+	@Override
+	public Country getCountry(String city) throws JSONException, IOException {
+	
+		JSONObject json = retrieveRawGeocode(city, null);
+		JSONObject firstResult = json.getJSONArray("results").getJSONObject(0);
+		JSONArray addressComponents = firstResult.getJSONArray("address_components");
+		
+		boolean encontrado = false;
+		String country = null;
+		int index = 0;
+		while(!encontrado && index < addressComponents.length()){
+			
+			JSONObject obj = addressComponents.getJSONObject(index++);
+			JSONArray types = obj.getJSONArray("types");
+			int indexType = 0;
+			while(!encontrado && indexType < types.length()){
+				
+				encontrado = types.getString(indexType++).equals("country");
+			}
+			
+			if(encontrado){
+				
+				country = obj.getString("short_name");
+			}
+		}
+		
+		return countryDao.getCountryByStandardCode(country);
+	}
+	
 	protected JSONObject retrieveRawGeocode(String cityName, String country) throws IOException, JSONException{
 		
 		StringBuilder urlBuilder = new StringBuilder(url);
@@ -73,5 +107,13 @@ public class GoogleGeocodingService implements GeolocationService {
 
 	public void setRestProvider(RestProvider restProvider) {
 		this.restProvider = restProvider;
+	}
+
+	public CountryDao getCountryDao() {
+		return countryDao;
+	}
+
+	public void setCountryDao(CountryDao dao) {
+		this.countryDao = dao;
 	}
 }

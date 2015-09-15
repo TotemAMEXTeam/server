@@ -8,12 +8,15 @@
 		<script type="text/Javascript" src="script/controller.js"></script>
 		<script type="text/Javascript" src="script/weather.js"></script>
 		<script type="text/Javascript" src="script/places.js"></script>
+		<script type="text/Javascript" src="script/flights.js"></script>
 		<link rel="stylesheet" href="style/style.css"/>
 	</head>
 
 	<body>
 
-		<input id="city" type="text" maxlength="20"/>
+		<select id="flight" onChange="selectFlight()"></select>
+		
+		<input id="city" type="text" maxlength="50"/>
 		
 		<div style="display:inline;">
 			<button onclick="activitiesEvent()">Cargar museos</button>
