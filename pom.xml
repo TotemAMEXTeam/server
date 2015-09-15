@@ -133,7 +133,29 @@
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.8.1</version>
-
+		</dependency>
+		<!-- Dependencias locales -->
+		<dependency>
+			<groupId>net.twilightstudios</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<directory>target</directory>
+		<outputDirectory>target/classes</outputDirectory>
+		<finalName>${artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<outputDirectory>C:\jboss-eap-6.3\standalone\deployments</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>
