@@ -3,6 +3,8 @@
 
 <beans default-lazy-init="true">
 
+	<bean id="sessionManager" class="net.twilightstudios.amex.util.persistence.hibernate.HibernateSessionManager"/>
+
 	<import resource="classpath:net/twilightstudios/amex/flight/service/flightService.xml"/>
 	<import resource="classpath:weatherContext.xml"/>
 	<import resource="classpath:placesContext.xml"/>
