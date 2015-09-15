@@ -20,23 +20,34 @@ function retrieveFlights(origin){
 
 function loadFlights(flights){
 
-	/*
-	var placesDiv = $("#content");
-	placesDiv.empty();
-	
-	placesDiv.append("<div id=\"flights\"></div>");
-	placesDiv =  $("#flights");
-	
-	for(var i=0;i<flights.length;i++){
-	
-		var flight = flights[i];
-		placesDiv.append("<div id=" + flight.flightNumber + " class=\"flight\">" + flight.flightNumber + "</div>");
-	}
-	*/
 	$.each(flights, function (i, flight) {
 	    $('#flight').append($('<option>', { 
 	        value: flight.destiny,
-	        text : flight.flightNumber 
+	        text : flight.flightNumber + " - " + flight.destiny 
 	    }));
 	});
+}
+
+function retrieveAirportCity(city){
+	
+	var regexp = /(.*)\((.*)\)/;
+	var match = regexp.exec(city);
+	var name = match[1];
+	var code = match[2];
+	
+	$.ajax({
+    	type: "GET",
+        url: "http://localhost:8080/server/rest/airport/retrieveCity",
+        data:{
+        	name: name,
+        	code: code},
+        dataType: 'text',
+        async: true,
+        success: loadCityName
+    });
+}
+
+function loadCityName(cityName){
+	
+	$("#city").val(cityName);	
 }

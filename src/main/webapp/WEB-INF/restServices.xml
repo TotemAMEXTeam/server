@@ -43,6 +43,12 @@
 		</property>
 	</bean>
 
+	<bean id="airportRestService"
+		class="net.twilightstudios.amex.airport.rest.AirportRestService">
+		<property name="airportService">
+			<ref bean="airportService" />
+		</property>
+	</bean>
 
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

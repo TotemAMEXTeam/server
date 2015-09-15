@@ -85,4 +85,13 @@
 		<property name="urlPagedValueParameter" value="page=/csee/Satellite/infovuelos/es/"/>
 	</bean>
 
+	<bean id="airportService" class="net.twilightstudios.amex.airport.service.impl.SmartAirportService">
+		<property name="exceptions">
+			<map>
+				<entry key="TFN" value="Santa Cruz de Tenerife"/>
+				<entry key="TFS" value="Santa Cruz de Tenerife"/>
+				<entry key="DOH" value="Doha"/>
+			</map>
+		</property>
+	</bean>
 </beans>

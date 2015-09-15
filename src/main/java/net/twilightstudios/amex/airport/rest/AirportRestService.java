@@ -20,7 +20,7 @@ public class AirportRestService {
 
 	
 	@RequestMapping(value="/retrieveCity", method=RequestMethod.GET, produces={"application/json"})
-	public @ResponseBody String retriebeCity(@RequestParam String name, @RequestParam String code) throws IOException {
+	public @ResponseBody String retrieveCity(@RequestParam String name, @RequestParam String code) throws IOException {
 		try {
 			return airportService.getCityByAirport(name, code);
 		} catch (Exception e) {

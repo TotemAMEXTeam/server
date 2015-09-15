@@ -21,6 +21,5 @@ function restaurantesEvent(){
 
 function selectFlight(){
 	
-	var city = $("#flight" ).val();
-	$("#city").val(city);
+	retrieveAirportCity($("#flight").val()); 
 }
