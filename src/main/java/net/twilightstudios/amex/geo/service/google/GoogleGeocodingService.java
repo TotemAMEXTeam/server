@@ -8,8 +8,8 @@ import net.twilightstudios.amex.geo.entity.Country;
 import net.twilightstudios.amex.geo.service.GeolocationService;
 import net.twilightstudios.amex.language.entity.Language;
 import net.twilightstudios.amex.places.entity.Coordinates;
-import net.twilightstudios.amex.rest.service.ApiKeyProvider;
-import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.util.rest.ApiKeyProvider;
+import net.twilightstudios.amex.util.rest.RestProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;

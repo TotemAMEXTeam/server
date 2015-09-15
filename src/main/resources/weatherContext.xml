@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
     
-    <bean id="openWeatherApiKeyProvider" class="net.twilightstudios.amex.rest.service.SimpleApiKeyProvider">
+    <bean id="openWeatherApiKeyProvider" class="net.twilightstudios.amex.util.rest.SimpleApiKeyProvider">
         <constructor-arg>
             <value>44f92811aad86da081fe87a40875faca</value>
         </constructor-arg>
@@ -24,6 +24,6 @@
         <property name="language"><value>es</value></property>
     </bean>
     
-    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>    
+    <bean id="restProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider"/>    
         
 </beans>

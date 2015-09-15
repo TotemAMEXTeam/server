@@ -8,8 +8,8 @@ import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.places.entity.OpeningDays;
 import net.twilightstudios.amex.places.entity.Place;
 import net.twilightstudios.amex.places.service.PlacesServiceProvider;
-import net.twilightstudios.amex.rest.service.ApiKeyProvider;
-import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.util.rest.ApiKeyProvider;
+import net.twilightstudios.amex.util.rest.RestProvider;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;

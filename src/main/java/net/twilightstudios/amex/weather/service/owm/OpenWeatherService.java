@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.twilightstudios.amex.rest.service.ApiKeyProvider;
-import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.util.rest.ApiKeyProvider;
+import net.twilightstudios.amex.util.rest.RestProvider;
 import net.twilightstudios.amex.weather.entity.Forecast;
 import net.twilightstudios.amex.weather.entity.Precipitation;
 import net.twilightstudios.amex.weather.entity.Summary;

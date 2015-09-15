@@ -6,8 +6,8 @@ import java.util.List;
 
 import net.twilightstudios.amex.maps.service.MapsService;
 import net.twilightstudios.amex.places.entity.Coordinates;
-import net.twilightstudios.amex.rest.service.ApiKeyProvider;
-import net.twilightstudios.amex.rest.service.RestProvider;
+import net.twilightstudios.amex.util.rest.ApiKeyProvider;
+import net.twilightstudios.amex.util.rest.RestProvider;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

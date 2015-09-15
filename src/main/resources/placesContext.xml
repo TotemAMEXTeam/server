@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
     
-    <bean id="googleApiKeyProvider" class="net.twilightstudios.amex.rest.service.SimpleApiKeyProvider">
+    <bean id="googleApiKeyProvider" class="net.twilightstudios.amex.util.rest.SimpleApiKeyProvider">
         <constructor-arg>
             <value>AIzaSyA27x5cAGeDq578qYGJH-HB3mIak4Esi9Q</value>
         </constructor-arg>
@@ -29,9 +29,9 @@
     
     <bean id="languageDao" class="net.twilightstudios.amex.language.dao.impl.BasicLanguageDAO"/>
     
-    <bean id="simpleRestProvider" class="net.twilightstudios.amex.rest.service.SimpleRestProvider"/>
+    <bean id="simpleRestProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider"/>
     
-    <bean id="restProvider" class="net.twilightstudios.amex.rest.service.InMemoryCachedRestProvider">
+    <bean id="restProvider" class="net.twilightstudios.amex.util.rest.InMemoryCachedRestProvider">
     	<constructor-arg ref="simpleRestProvider" />
     </bean>
     
