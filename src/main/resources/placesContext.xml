@@ -23,11 +23,19 @@
     <bean id="languageService" class="net.twilightstudios.amex.language.service.impl.BasicLanguageServiceImpl">
     	<property name="geolocationService" ref="geolocationService"/>
     	<property name="languageDAO" ref="languageDao"/>
+    	<property name="languageExpressionDAO" ref="languageExpressionDao"/>
+    	<property name="manager" ref="sessionManager"/>
     </bean>
     
     <bean id="countryDao" class="net.twilightstudios.amex.geo.dao.impl.BasicCountryDao"/>
     
-    <bean id="languageDao" class="net.twilightstudios.amex.language.dao.impl.BasicLanguageDAO"/>
+    <bean id="languageDao" class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageDAO">
+    	<property name="manager" ref="sessionManager"/>
+    </bean>
+    
+    <bean id="languageExpressionDao" class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageExpressionDAO">
+    	<property name="manager" ref="sessionManager"/>
+    </bean>
     
     <bean id="simpleRestProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider"/>
     

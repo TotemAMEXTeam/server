@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+
+	<class name="net.twilightstudios.amex.language.entity.LanguageExpression" table="language_expression">
+	
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="identity"/>
+		</id>	
+		
+		<property name="originLanguage" type="java.lang.String" not-null="true" column="origin_language"/>
+		<property name="destinyLanguage" type="java.lang.String" not-null="true" column="destiny_language"/>
+		<property name="originExpression" type="java.lang.String" not-null="true" column="origin_expression"/>
+		<property name="destinyExpression" type="java.lang.String" not-null="true" column="destiny_expression"/>
+		<property name="explanation" type="java.lang.String" column="explanation"/>
+	
+	</class>
+
+</hibernate-mapping>

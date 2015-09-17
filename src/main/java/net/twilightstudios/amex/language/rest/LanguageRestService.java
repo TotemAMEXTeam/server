@@ -1,10 +1,12 @@
 package net.twilightstudios.amex.language.rest;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 
 import net.twilightstudios.amex.language.entity.Language;
+import net.twilightstudios.amex.language.entity.LanguageExpression;
 import net.twilightstudios.amex.language.service.LanguageService;
 
 import org.json.JSONException;
@@ -19,6 +21,14 @@ public class LanguageRestService {
 
 	private LanguageService languageService;
 	
+	public LanguageService getLanguageService() {
+		return languageService;
+	}
+
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
+	}
+	
 	@RequestMapping(value="/retrieve", method=RequestMethod.GET, produces={"application/json"})
 	public Language retrieveLanguage(@RequestParam String city) throws IOException, JSONException {
 		try {
@@ -27,12 +37,14 @@ public class LanguageRestService {
 			 throw new WebApplicationException(e);
 		}
 	}
-
-	public LanguageService getLanguageService() {
-		return languageService;
+	
+	@RequestMapping(value="/retrieveExpressions", method=RequestMethod.GET, produces={"application/json"})
+	public List<LanguageExpression> retrieveLanguage(@RequestParam String originLanguage, String destinyLanguage) throws IOException, JSONException {
+		try {
+			return languageService.getLanguageExpressions(originLanguage, destinyLanguage);			
+		} catch (Exception e) {
+			 throw new WebApplicationException(e);
+		}
 	}
 
-	public void setLanguageService(LanguageService languageService) {
-		this.languageService = languageService;
-	}
 }

@@ -23,6 +23,10 @@
 
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
+        
+        <!-- Hibernate mappings -->
+        <mapping resource="net/twilightstudios/amex/language/Language.hbm.xml"/>
+        <mapping resource="net/twilightstudios/amex/language/LanguageExpression.hbm.xml"/>
 
     </session-factory>
 

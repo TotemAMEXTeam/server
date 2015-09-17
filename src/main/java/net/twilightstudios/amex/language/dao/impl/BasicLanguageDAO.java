@@ -5,11 +5,6 @@ import net.twilightstudios.amex.language.entity.Language;
 
 public class BasicLanguageDAO implements LanguageDAO {
 
-	@Override
-	public Language getLanguageById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Language getLanguageByStandardCode(String code) {
@@ -31,9 +26,8 @@ public class BasicLanguageDAO implements LanguageDAO {
 	private Language createEn(){
 		
 		Language language = new Language();
-		language.setId(1l);
-		language.setDescription("Inglés");		
-		language.setStandardCode("en");
+		language.setLanguage("Inglés");		
+		language.setCode("en");
 		
 		return language;
 	}
@@ -41,9 +35,8 @@ public class BasicLanguageDAO implements LanguageDAO {
 	private Language createEs(){
 		
 		Language language = new Language();
-		language.setId(0l);
-		language.setDescription("Español");		
-		language.setStandardCode("es");
+		language.setLanguage("Español");		
+		language.setCode("es");
 		
 		return language;
 	}
@@ -51,9 +44,8 @@ public class BasicLanguageDAO implements LanguageDAO {
 	private Language createIt(){
 		
 		Language language = new Language();
-		language.setId(2l);
-		language.setDescription("Italiano");		
-		language.setStandardCode("it");
+		language.setLanguage("Italiano");		
+		language.setCode("it");
 		
 		return language;
 	}
