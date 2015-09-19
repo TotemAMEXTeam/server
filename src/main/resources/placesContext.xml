@@ -16,7 +16,7 @@
 			<value>https://maps.googleapis.com/maps/api/geocode/json</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 
 		<property name="countryDao" ref="countryDao" />
 	</bean>
@@ -79,7 +79,7 @@
 			<value>14</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 
 	</bean>
 
@@ -96,7 +96,7 @@
 			<value>GOOGLE</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 
 		<property name="radius">
 			<value>5000</value>
