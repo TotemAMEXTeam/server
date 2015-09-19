@@ -30,7 +30,7 @@ public class SmartAirportService implements AirportService {
 			}
 		}
 		
-		return code;
+		return name;
 	}
 	
 	private String smartTrim(String name){
