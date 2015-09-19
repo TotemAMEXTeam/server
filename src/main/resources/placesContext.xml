@@ -1,92 +1,125 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
-    
-    <bean id="googleApiKeyProvider" class="net.twilightstudios.amex.util.rest.SimpleApiKeyProvider">
-        <constructor-arg>
-            <value>AIzaSyA27x5cAGeDq578qYGJH-HB3mIak4Esi9Q</value>
-        </constructor-arg>
-    </bean>
-    
-    <bean id="geolocationService" class="net.twilightstudios.amex.geo.service.google.GoogleGeocodingService">
-        <constructor-arg ref="googleApiKeyProvider"/>
-        
-        <property name="url">
-            <value>https://maps.googleapis.com/maps/api/geocode/json</value>
-        </property>
-        
-        <property name="restProvider" ref="restProvider"/>
-        
-        <property name="countryDao" ref="countryDao"/>
-    </bean>
-    
-    <bean id="languageService" class="net.twilightstudios.amex.language.service.impl.BasicLanguageServiceImpl">
-    	<property name="geolocationService" ref="geolocationService"/>
-    	<property name="languageDAO" ref="languageDao"/>
-    	<property name="languageExpressionDAO" ref="languageExpressionDao"/>
-    	<property name="manager" ref="sessionManager"/>
-    </bean>
-    
-    <bean id="countryDao" class="net.twilightstudios.amex.geo.dao.impl.BasicCountryDao"/>
-    
-    <bean id="languageDao" class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageDAO">
-    	<property name="manager" ref="sessionManager"/>
-    </bean>
-    
-    <bean id="languageExpressionDao" class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageExpressionDAO">
-    	<property name="manager" ref="sessionManager"/>
-    </bean>
-    
-    <bean id="simpleRestProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider"/>
-    
-    <bean id="restProvider" class="net.twilightstudios.amex.util.rest.InMemoryCachedRestProvider">
-    	<constructor-arg ref="simpleRestProvider" />
-    </bean>
-    
-    <bean id="mapsService" class="net.twilightstudios.amex.maps.service.google.GoogleMapsService">
-        <constructor-arg ref="googleApiKeyProvider"/>
-        
-        <property name="url">
-            <value>https://maps.googleapis.com/maps/api/staticmap</value>
-        </property>
-        
-        <property name="size"><value>512x512</value></property>
-        <property name="maptype"><value>hybrid</value></property>
-        <property name="zoom"><value>14</value></property>
-        
-        <property name="restProvider" ref="restProvider"/>
-        
-    </bean>
-    
-    <bean id="placesService" class="net.twilightstudios.amex.places.service.impl.PlacesServiceImpl">
-    	<property name="googlePlacesService" ref="googlePlacesProvider" />   	
-    </bean>
-    
-    <bean id="googlePlacesProvider" class="net.twilightstudios.amex.places.service.google.GooglePlacesServiceProvider">
-        <constructor-arg ref="googleApiKeyProvider"/>
 
-        <property name="providerId">
-            <value>GOOGLE</value>
-        </property>
-        
-        <property name="restProvider" ref="restProvider"/>
-        
-        <property name="radius"><value>5000</value></property>
-        <property name="maxHeight"><value>1600</value></property>
-        <!--  <property name="maxWidth"><value>1600</value></property> -->
-                
-        <property name="url">
-            <value>https://maps.googleapis.com/maps/api/place/nearbysearch/json</value>            
-        </property>
-        
-        <property name="urlDetail">
-            <value>https://maps.googleapis.com/maps/api/place/details/json</value>            
-        </property>
-        
-        <property name="urlPhoto">
-            <value>https://maps.googleapis.com/maps/api/place/photo</value>            
-        </property>
+	<bean id="googleApiKeyProvider" class="net.twilightstudios.amex.util.rest.SimpleApiKeyProvider">
+		<constructor-arg>
+			<value>AIzaSyA27x5cAGeDq578qYGJH-HB3mIak4Esi9Q</value>
+		</constructor-arg>
+	</bean>
 
-        <property name="language"><value>es</value></property>
-    </bean>    
+	<bean id="geolocationService"
+		class="net.twilightstudios.amex.geo.service.google.GoogleGeocodingService">
+		<constructor-arg ref="googleApiKeyProvider" />
+
+		<property name="url">
+			<value>https://maps.googleapis.com/maps/api/geocode/json</value>
+		</property>
+
+		<property name="restProvider" ref="databaseRestProvider" />
+
+		<property name="countryDao" ref="countryDao" />
+	</bean>
+
+	<bean id="languageService"
+		class="net.twilightstudios.amex.language.service.impl.BasicLanguageServiceImpl">
+		<property name="geolocationService" ref="geolocationService" />
+		<property name="languageDAO" ref="languageDao" />
+		<property name="languageExpressionDAO" ref="languageExpressionDao" />
+		<property name="manager" ref="sessionManager" />
+	</bean>
+
+	<bean id="countryDao" class="net.twilightstudios.amex.geo.dao.impl.BasicCountryDao" />
+
+	<bean id="languageDao"
+		class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageDAO">
+		<property name="manager" ref="sessionManager" />
+	</bean>
+
+	<bean id="languageExpressionDao"
+		class="net.twilightstudios.amex.language.dao.impl.HibernateLanguageExpressionDAO">
+		<property name="manager" ref="sessionManager" />
+	</bean>
+
+	<bean id="simpleRestProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider" />
+
+	<bean id="restProvider"
+		class="net.twilightstudios.amex.util.rest.cache.service.InMemoryCachedRestProvider">
+		<constructor-arg ref="simpleRestProvider" />
+	</bean>
+
+	<bean id="databaseRestProvider"
+		class="net.twilightstudios.amex.util.rest.cache.service.DatabaseCachedRestProvider">
+		<constructor-arg ref="simpleRestProvider" />
+		<property name="cacheTTL">
+			<value>3600000</value>
+		</property>
+		<property name="manager" ref="sessionManager"/>
+		<property name="dao" ref="cacheContentDAO"/>
+	</bean>
+	
+	<bean id="cacheContentDAO" class="net.twilightstudios.amex.util.rest.cache.dao.impl.HibernateCacheContentDAO">
+		<property name="manager" ref="sessionManager"/>
+	</bean>
+
+	<bean id="mapsService"
+		class="net.twilightstudios.amex.maps.service.google.GoogleMapsService">
+		<constructor-arg ref="googleApiKeyProvider" />
+		<property name="url">
+			<value>https://maps.googleapis.com/maps/api/staticmap</value>
+		</property>
+
+		<property name="size">
+			<value>512x512</value>
+		</property>
+		<property name="maptype">
+			<value>hybrid</value>
+		</property>
+		<property name="zoom">
+			<value>14</value>
+		</property>
+
+		<property name="restProvider" ref="databaseRestProvider" />
+
+	</bean>
+
+	<bean id="placesService"
+		class="net.twilightstudios.amex.places.service.impl.PlacesServiceImpl">
+		<property name="googlePlacesService" ref="googlePlacesProvider" />
+	</bean>
+
+	<bean id="googlePlacesProvider"
+		class="net.twilightstudios.amex.places.service.google.GooglePlacesServiceProvider">
+		<constructor-arg ref="googleApiKeyProvider" />
+
+		<property name="providerId">
+			<value>GOOGLE</value>
+		</property>
+
+		<property name="restProvider" ref="databaseRestProvider" />
+
+		<property name="radius">
+			<value>5000</value>
+		</property>
+		<property name="maxHeight">
+			<value>1600</value>
+		</property>
+		<!-- <property name="maxWidth"><value>1600</value></property> -->
+
+		<property name="url">
+			<value>https://maps.googleapis.com/maps/api/place/nearbysearch/json</value>
+		</property>
+
+		<property name="urlDetail">
+			<value>https://maps.googleapis.com/maps/api/place/details/json</value>
+		</property>
+
+		<property name="urlPhoto">
+			<value>https://maps.googleapis.com/maps/api/place/photo</value>
+		</property>
+
+		<property name="language">
+			<value>es</value>
+		</property>
+	</bean>
 </beans>
