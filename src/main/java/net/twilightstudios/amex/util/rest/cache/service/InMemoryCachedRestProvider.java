@@ -1,9 +1,12 @@
-package net.twilightstudios.amex.util.rest;
+package net.twilightstudios.amex.util.rest.cache.service;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.twilightstudios.amex.util.rest.RestProvider;
+import net.twilightstudios.amex.util.rest.cache.entity.CacheContent;
 
 public class InMemoryCachedRestProvider implements RestProvider {
 
@@ -35,7 +38,7 @@ public class InMemoryCachedRestProvider implements RestProvider {
 				
 		String result = delegate.retrieveRawInformation(urlString);
 		
-		content = new CacheContent(new Date(),result); 
+		content = new CacheContent(urlString, new Date(),result); 
 		cache.put(urlString, content);
 		
 		return result;
@@ -54,26 +57,5 @@ public class InMemoryCachedRestProvider implements RestProvider {
 	public void setCacheTTL(long cacheTTL) {
 		this.cacheTTL = cacheTTL;
 	}
-	
-	private class CacheContent{
-		
-		private Date timestamp;
-		private String json;
-		
-		public CacheContent(Date timestamp, String json) {
-			super();
-			this.timestamp = timestamp;
-			this.json = json;
-		}
-
-		public Date getTimestamp() {
-			return timestamp;
-		}
-		
-		public String getJson() {
-			return json;
-		}
-	}
-
 
 }
