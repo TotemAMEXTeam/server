@@ -23,3 +23,11 @@ function selectFlight(){
 	
 	retrieveAirportCity($("#flight").val()); 
 }
+
+function flightStatusEvent() {
+	retrieveFlightStatus($("#flight").val());
+}
+
+function languageExpressionsEvent() {
+	retrieveLanguageExpressions($("#city").val());
+}

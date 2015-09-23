@@ -61,17 +61,31 @@ public class BasicLanguageServiceImpl implements LanguageService{
 		
 		Country country = geolocationService.getCountry(city);
 		manager.beginTransactionOnCurrentSession();
-		Language language = languageDAO.getLanguageByStandardCode(country.getLanguage());
-		manager.rollbackOnCurrentSession();
+		Language language = null;
+		try {
+			language = languageDAO.getLanguageByStandardCode(country.getLanguage());
+			manager.rollbackOnCurrentSession();
+		}
+		catch (Exception e) {
+			manager.rollbackOnCurrentSession();
+			throw new IOException(e);
+		}
 		
 		return language;		
 	}
 
 	@Override
-	public List<LanguageExpression> getLanguageExpressions(String originLanguage, String destinyLanguage) {
+	public List<LanguageExpression> getLanguageExpressions(String originLanguage, String destinyLanguage) throws IOException {
 		manager.beginTransactionOnCurrentSession();
-		List<LanguageExpression> expressionsList = languageExpressionDAO.getByOriginDestinyLanguage(originLanguage, destinyLanguage);
-		manager.rollbackOnCurrentSession();
+		List<LanguageExpression> expressionsList = null;
+		try {
+			expressionsList = languageExpressionDAO.getByOriginDestinyLanguage(originLanguage, destinyLanguage);
+			manager.rollbackOnCurrentSession();
+		}
+		catch (Exception e) {
+			manager.rollbackOnCurrentSession();
+			throw new IOException(e);
+		}
 		return expressionsList;
 	}
 	

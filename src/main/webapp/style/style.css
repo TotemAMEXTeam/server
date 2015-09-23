@@ -39,6 +39,31 @@
 	margin:3px;
 }
 
+.flightStatus{
+	border:3px solid #3399FF;
+	width:45%;
+	height:200px;
+	float:left;
+	border-radius:20px;
+	text-align:justify;
+	margin:3px;
+	overflow: auto;
+	padding:1%;
+}
+
+.expression{
+	border:3px solid #3399FF;
+	width:45%;
+	height:200px;
+	float:left;
+	border-radius:20px;
+	text-align:justify;
+	margin:3px;
+	overflow: auto;
+	padding:1%;
+}
+
+
 .activity{
 	
 	border:3px solid #3399FF;

@@ -12,6 +12,6 @@ public interface LanguageService {
 
 	public Language getLanguage(String city) throws JSONException, IOException;
 	
-	public List<LanguageExpression> getLanguageExpressions (String originLanguage, String destinyLanguage);
+	public List<LanguageExpression> getLanguageExpressions (String originLanguage, String destinyLanguage)  throws IOException;
 
 }
