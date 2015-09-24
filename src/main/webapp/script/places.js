@@ -1,6 +1,31 @@
 /**
  * 
  */
+
+var coords = [];
+
+function loadMap(){
+	
+	var latParam = "lat=" + coords[0].lat;
+	var lonParam = "lon=" + coords[0].lon;
+	
+	for(var i=1;i< coords.length;i++){
+						
+		latParam += "&lat=" + coords[i].lat;
+		lonParam += "&lon=" + coords[i].lon;
+	}
+	
+	latParam = encodeURI(latParam);
+	lonParam = encodeURI(lonParam);
+		
+	var placesDiv = $("#content");
+	placesDiv.empty();
+	
+	placesDiv.append("<img id=map src=\"http://localhost:8080/server/rest/maps/retrieveByList?" + latParam + "&" + lonParam + "\" />");
+	
+	
+}
+
 function loadMuseums(city){
 	
 	$.ajax({
@@ -55,6 +80,8 @@ function retrieveActivities(coords){
 
 function loadActivities(data){
 	
+	coords = [];
+	
 	var placesDiv = $("#content");
 	placesDiv.empty();
 	
@@ -76,5 +103,7 @@ function loadActivities(data){
 			var activityPhotoDiv = $("#photoDiv" + activity.id);		
 			activityPhotoDiv.append("<img id=photo" + activity.id + " src=\"http://localhost:8080/server/rest/places/image/" + activity.photoId  + "\" class=\"photoImg\"/>");
 		}
+		
+		coords.push(activity.coord);
 	}
 }

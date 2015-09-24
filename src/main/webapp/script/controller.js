@@ -31,3 +31,8 @@ function flightStatusEvent() {
 function languageExpressionsEvent() {
 	retrieveLanguageExpressions($("#city").val());
 }
+
+function mapEvent(){
+	
+	loadMap();
+}

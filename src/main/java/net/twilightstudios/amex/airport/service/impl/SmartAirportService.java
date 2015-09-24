@@ -18,7 +18,7 @@ public class SmartAirportService implements AirportService {
 			return exceptions.get(code);
 		}
 		
-		char[] separators = {'-','/','('};
+		char[] separators = {'/','-','('};
 				
 		for(char separator:separators){
 			
