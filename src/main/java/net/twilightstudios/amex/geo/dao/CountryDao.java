@@ -8,6 +8,4 @@ public interface CountryDao {
 	public Country getCountryById(Long id);
 	public Country getCountryByStandardCode(String code);
 	
-	public City getCityById(String id);
-	
 }
