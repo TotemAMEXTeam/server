@@ -8,7 +8,12 @@ import net.twilightstudios.amex.util.rest.RestProvider;
 import net.twilightstudios.amex.util.rest.cache.dao.CacheContentDAO;
 import net.twilightstudios.amex.util.rest.cache.entity.CacheContent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class DatabaseCachedRestProvider implements RestProvider {
+	
+	private static Log log = LogFactory.getLog(RestProvider.class);
 	
 	private RestProvider delegate;
 	private long cacheTTL;
@@ -69,9 +74,18 @@ public class DatabaseCachedRestProvider implements RestProvider {
 					
 			String result = delegate.retrieveRawInformation(urlString);
 			
-			content = new CacheContent(urlString, new Date(),result); 
-			dao.storeCacheContent(content);
-			manager.commitOnCurrentSession();
+			try{
+				
+				content = new CacheContent(urlString, new Date(),result);
+				dao.storeCacheContent(content);
+				manager.commitOnCurrentSession();
+			}
+			catch(Exception e){
+			
+				log.error("Error en el cache de URL: " + e.getMessage(),e);
+				manager.rollbackOnCurrentSession();
+			}
+			
 			return result;
 		}
 		catch (Exception e) {

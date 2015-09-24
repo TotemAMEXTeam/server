@@ -91,6 +91,7 @@
 				<entry key="TFN" value="Santa Cruz de Tenerife"/>
 				<entry key="TFS" value="Santa Cruz de Tenerife"/>
 				<entry key="DOH" value="Doha"/>
+				<entry key="SJO" value="San Jose"/>
 			</map>
 		</property>
 	</bean>
