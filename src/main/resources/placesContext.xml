@@ -45,12 +45,12 @@
 
 	<bean id="simpleRestProvider" class="net.twilightstudios.amex.util.rest.SimpleRestProvider" />
 
-	<bean id="restProvider"
+	<bean id="inMemoryRestProvider"
 		class="net.twilightstudios.amex.util.rest.cache.service.InMemoryCachedRestProvider">
 		<constructor-arg ref="simpleRestProvider" />
 	</bean>
 
-	<bean id="databaseRestProvider"
+	<bean id="restProvider"
 		class="net.twilightstudios.amex.util.rest.cache.service.DatabaseCachedRestProvider">
 		<constructor-arg ref="simpleRestProvider" />
 		<property name="cacheTTL">

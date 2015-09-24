@@ -60,7 +60,7 @@ function retrieveFlightStatus(flightNo) {
 	var num = match[1];
 	var jsonDate = match[2];
 	var date = new Date(parseInt(jsonDate));
-	var scheduledDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"+"+date.getHours()+":"+date.getMinutes()
+	var scheduledDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"+"+date.getHours()+":"+date.getMinutes();
 	$.ajax({
     	type: "GET",
         url: "http://localhost:8080/server/rest/flight/flightStatus/"+num+"?hprevista="+scheduledDate,
@@ -70,6 +70,18 @@ function retrieveFlightStatus(flightNo) {
         	loadFlightStatus(flightStatus);
         } 
     });	
+}
+
+function completeZeros(number){
+	
+	var result = number;
+
+	if(number.toString().length == 1){
+		
+		result =  "0"+number;
+	}
+
+	return result;
 }
 
 function loadFlightStatus (flightStatus) {
@@ -82,7 +94,7 @@ function loadFlightStatus (flightStatus) {
 	flightDiv.append("<div id=" + flightStatus.flight.destiny + ">Destino: "+flightStatus.flight.destiny +"</div>");
 	flightDiv.append("<div id=" + flightStatus.flight.company + ">Compania: "+flightStatus.flight.company +"</div>");
 	var date = new Date((parseInt(flightStatus.flight.scheduledDeparture)));
-	var scheduledDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()
+	var scheduledDate = completeZeros(date.getDate())+"/"+completeZeros(date.getMonth()+1)+"/"+completeZeros(date.getFullYear())+" "+completeZeros(date.getHours())+":"+completeZeros(date.getMinutes());
 	flightDiv.append("<div id=" + scheduledDate + ">Salida programada: "+scheduledDate +"</div>");
 	flightDiv.append("<div id=" + flightStatus.status + ">Estado: "+flightStatus.status +"</div>");
 	flightDiv.append("<div id=" + flightStatus.originTerminal + ">Terminal origen: "+flightStatus.originTerminal +"</div>");
@@ -90,7 +102,7 @@ function loadFlightStatus (flightStatus) {
 		flightDiv.append("<div id=" + flightStatus.destinyTerminal + ">Terminal destino: "+flightStatus.destinyTerminal +"</div>");
 	}
 	var date = new Date((parseInt(flightStatus.estimatedDeparture)));
-	var estimatedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()
+	var estimatedDate = completeZeros(date.getDate())+"/"+completeZeros((date.getMonth()+1))+"/"+completeZeros(date.getFullYear())+" "+completeZeros(date.getHours())+":"+completeZeros(date.getMinutes())
 	flightDiv.append("<div id=" + flightStatus.estimatedDate + ">Salida estimada: "+estimatedDate +"</div>");
 	if (flightStatus.estimatedArrival != null) {
 		var date = new Date((parseInt(flightStatus.estimatedArrival)));
