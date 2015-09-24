@@ -708,8 +708,7 @@ public class AenaHTMLFlightService implements FlightService {
 		FlightStatus status = new FlightStatus();
 		
 		if ((flightInfoElements == null) || (fechaOrigen == null) || (horaOrigen == null) ||
-			(terminalOrigen == null) || (mostradorOrigen == null) || (puertaOrigen == null) ||
-			(estadoOrigen == null) || (route == null) || companyInfo == null) {
+			(estadoOrigen == null) || (route == null)) {
 			status = null;
 		}
 		else {
@@ -717,9 +716,15 @@ public class AenaHTMLFlightService implements FlightService {
 			// Status on departure
 			flight.setFlightNumber(id);
 			status.setFlight(flight);
-			status.setBoardingGate(puertaOrigen.text());
-			status.setCheckInCounter(mostradorOrigen.text());
-			status.setOriginTerminal(terminalOrigen.text());
+			if (puertaOrigen != null) {
+				status.setBoardingGate(puertaOrigen.text());
+			}
+			if (mostradorOrigen != null) {
+				status.setCheckInCounter(mostradorOrigen.text());
+			}
+			if (terminalOrigen != null) {
+				status.setOriginTerminal(terminalOrigen.text());
+			}
 			
 			String scheduledDateToProcess = fechaOrigen.text();
 			String scheduledTimeToProcess = horaOrigen.text();
@@ -749,7 +754,9 @@ public class AenaHTMLFlightService implements FlightService {
 				flight.setDestiny(destiny);
 			}
 			
-			flight.setCompany(companyInfo.text());
+			if (companyInfo != null) {
+				flight.setCompany(companyInfo.text());
+			}
 			
 			// Status on arrival
 			Element fechaDestino = flightInfoElements.select(responseFlightDataTdArrivalDate).first();
@@ -759,8 +766,8 @@ public class AenaHTMLFlightService implements FlightService {
 			Element cintaDestino = flightInfoElements.select(responseFlightDataTdArrivalBelt).first();
 			Element estadoDestino = flightInfoElements.select(responseFlightDataTdArrivalState).first();
 			
-			if (!((fechaDestino == null) || (horaDestino == null) ||
-					(terminalDestino == null) || (salaDestino == null) || (cintaDestino == null) ||
+			if (!((fechaDestino == null) && (horaDestino == null) &&
+					(terminalDestino == null) && (salaDestino == null) && (cintaDestino == null) &&
 					(estadoDestino == null))) {
 				String arrivalDateToProcess = fechaDestino.text();
 				String arrivalTimeToProcess = horaDestino.text();
