@@ -33,12 +33,6 @@ public class BasicCountryDao implements CountryDao {
 		}
 	}
 
-	@Override
-	public City getCityById(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private Country createSpain(){
 		
 		Country sp = new Country();

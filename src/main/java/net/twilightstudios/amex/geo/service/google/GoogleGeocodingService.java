@@ -7,6 +7,7 @@ import net.twilightstudios.amex.geo.dao.CountryDao;
 import net.twilightstudios.amex.geo.entity.Country;
 import net.twilightstudios.amex.geo.service.GeolocationService;
 import net.twilightstudios.amex.places.entity.Coordinates;
+import net.twilightstudios.amex.util.persistence.TransactionManager;
 import net.twilightstudios.amex.util.rest.ApiKeyProvider;
 import net.twilightstudios.amex.util.rest.RestProvider;
 
@@ -19,6 +20,7 @@ public class GoogleGeocodingService implements GeolocationService {
 	private String url;
 	private final String apiKey;
 	private CountryDao countryDao; 
+	private TransactionManager manager;
 	
 	private RestProvider restProvider;
 	
@@ -67,8 +69,17 @@ public class GoogleGeocodingService implements GeolocationService {
 				country = obj.getString("short_name");
 			}
 		}
-		
-		return countryDao.getCountryByStandardCode(country);
+		manager.beginTransactionOnCurrentSession();
+		Country coun = null;
+		try {
+			coun = countryDao.getCountryByStandardCode(country);
+			manager.rollbackOnCurrentSession();
+		}
+		catch (Exception e) {
+			manager.rollbackOnCurrentSession();
+			throw e;
+		}
+		return coun;
 	}
 	
 	protected JSONObject retrieveRawGeocode(String cityName, String country) throws IOException, JSONException{
@@ -115,4 +126,14 @@ public class GoogleGeocodingService implements GeolocationService {
 	public void setCountryDao(CountryDao dao) {
 		this.countryDao = dao;
 	}
+
+	public TransactionManager getManager() {
+		return manager;
+	}
+
+	public void setManager(TransactionManager manager) {
+		this.manager = manager;
+	}
+	
+	
 }
