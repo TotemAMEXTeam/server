@@ -16,7 +16,7 @@
 			<value>https://maps.googleapis.com/maps/api/geocode/json</value>
 		</property>
 
-		<property name="restProvider" ref="restProvider" />
+		<property name="restProvider" ref="databaseRestProvider" />
 
 		<property name="countryDao" ref="countryDao" />
 	</bean>
@@ -52,7 +52,7 @@
 		class="net.twilightstudios.amex.util.rest.cache.service.DatabaseCachedRestProvider">
 		<constructor-arg ref="simpleRestProvider" />
 		<property name="cacheTTL">
-			<value>3600000</value>
+			<value>2592000000</value>
 		</property>
 		<property name="manager" ref="sessionManager"/>
 		<property name="dao" ref="cacheContentDAO"/>
@@ -79,7 +79,7 @@
 			<value>14</value>
 		</property>
 
-		<property name="restProvider" ref="restProvider" />
+		<property name="restProvider" ref="databaseRestProvider" />
 
 	</bean>
 
@@ -96,7 +96,7 @@
 			<value>GOOGLE</value>
 		</property>
 
-		<property name="restProvider" ref="restProvider" />
+		<property name="restProvider" ref="databaseRestProvider" />
 
 		<property name="radius">
 			<value>5000</value>
