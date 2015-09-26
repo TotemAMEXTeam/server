@@ -6,7 +6,9 @@ import java.util.Date;
 import net.twilightstudios.amex.util.persistence.TransactionManager;
 import net.twilightstudios.amex.util.rest.RestProvider;
 import net.twilightstudios.amex.util.rest.cache.dao.CacheContentDAO;
+import net.twilightstudios.amex.util.rest.cache.dao.ImageCacheContentDAO;
 import net.twilightstudios.amex.util.rest.cache.entity.CacheContent;
+import net.twilightstudios.amex.util.rest.cache.entity.ImageCacheContent;
 
 public class DatabaseCachedRestProvider implements RestProvider {
 	
@@ -14,7 +16,7 @@ public class DatabaseCachedRestProvider implements RestProvider {
 	private long cacheTTL;
 	private TransactionManager manager;
 	private CacheContentDAO dao;
-	
+	private ImageCacheContentDAO imageDao;
 	
 	public TransactionManager getManager() {
 		return manager;
@@ -30,6 +32,14 @@ public class DatabaseCachedRestProvider implements RestProvider {
 
 	public void setDao(CacheContentDAO dao) {
 		this.dao = dao;
+	}
+
+	public ImageCacheContentDAO getImageDao() {
+		return imageDao;
+	}
+
+	public void setImageDao(ImageCacheContentDAO imageDao) {
+		this.imageDao = imageDao;
 	}
 
 	public RestProvider getDelegate() {
@@ -82,7 +92,33 @@ public class DatabaseCachedRestProvider implements RestProvider {
 
 	@Override
 	public byte[] retrieveRawImage(String urlString) throws IOException {
-		return delegate.retrieveRawImage(urlString);
+		manager.beginTransactionOnCurrentSession();
+		try {	
+			ImageCacheContent content = imageDao.getImageCacheContent(urlString);
+			if(content != null){		
+				if(System.currentTimeMillis() - content.getTimestamp().getTime() <= cacheTTL){	
+					manager.rollbackOnCurrentSession();
+					return content.getImage();
+				}
+				else {
+					imageDao.deleteImageCacheContent(content);
+				}
+			}
+					
+			byte[] result = delegate.retrieveRawImage(urlString);
+			
+			content = new ImageCacheContent();
+			content.setImage(result);
+			content.setTimestamp(new Date());
+			content.setUrl(urlString);
+			imageDao.storeImageCacheContent(content);
+			manager.commitOnCurrentSession();
+			return result;
+		}
+		catch (Exception e) {
+			manager.rollbackOnCurrentSession();
+			throw new IOException(e);
+		}
 	}
 
 }

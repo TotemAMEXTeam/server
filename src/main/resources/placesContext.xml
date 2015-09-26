@@ -16,7 +16,7 @@
 			<value>https://maps.googleapis.com/maps/api/geocode/json</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 		<property name="manager" ref="sessionManager" />
 		<property name="countryDao" ref="countryDao" />
 	</bean>
@@ -58,9 +58,14 @@
 		</property>
 		<property name="manager" ref="sessionManager"/>
 		<property name="dao" ref="cacheContentDAO"/>
+		<property name="imageDao" ref="imageCacheContentDAO"/>
 	</bean>
 	
 	<bean id="cacheContentDAO" class="net.twilightstudios.amex.util.rest.cache.dao.impl.HibernateCacheContentDAO">
+		<property name="manager" ref="sessionManager"/>
+	</bean>
+	
+	<bean id="imageCacheContentDAO" class="net.twilightstudios.amex.util.rest.cache.dao.impl.HibernateImageCacheContentDAO">
 		<property name="manager" ref="sessionManager"/>
 	</bean>
 
@@ -81,7 +86,7 @@
 			<value>14</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 
 	</bean>
 
@@ -98,7 +103,7 @@
 			<value>GOOGLE</value>
 		</property>
 
-		<property name="restProvider" ref="databaseRestProvider" />
+		<property name="restProvider" ref="restProvider" />
 
 		<property name="radius">
 			<value>5000</value>
