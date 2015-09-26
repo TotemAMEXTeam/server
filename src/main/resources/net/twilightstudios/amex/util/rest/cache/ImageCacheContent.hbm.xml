@@ -13,7 +13,7 @@
 		
 		<property name="url" type="text" not-null="true" column="url"/>
 		<property name="timestamp" type="java.util.Date" not-null="true" column="timestamp"/>
-		<property name="image" type="blob" not-null="true" column="image"/>
+		<property name="image" type="binary" not-null="true" column="image"/>
 	
 	</class>
 
