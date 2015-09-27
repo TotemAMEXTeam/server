@@ -8,6 +8,13 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="tripAdvisorApiKeyProvider" class="net.twilightstudios.amex.util.rest.SimpleApiKeyProvider">
+		<constructor-arg>
+			<value>138ed97d-1bc3-4540-8eb6-5f2614ff87ae</value>
+		</constructor-arg>
+	</bean>
+
+	
 	<bean id="geolocationService"
 		class="net.twilightstudios.amex.geo.service.google.GoogleGeocodingService">
 		<constructor-arg ref="googleApiKeyProvider" />
@@ -84,7 +91,7 @@
 
 	</bean>
 
-	<bean id="placesService"
+	<bean id="simplePlacesService"
 		class="net.twilightstudios.amex.places.service.impl.PlacesServiceImpl">
 		<property name="googlePlacesService" ref="googlePlacesProvider" />
 	</bean>
@@ -122,5 +129,29 @@
 		<property name="language">
 			<value>es</value>
 		</property>
+	</bean>
+	
+	<bean id="placesService" class="net.twilightstudios.amex.places.service.tripadvisor.TripAdvisorPlacesService">
+		<constructor-arg ref="tripAdvisorApiKeyProvider" />
+		
+		<property name="providerId">
+			<value>TRIP-ADVISOR</value>
+		</property>
+		
+		<property name="restProvider" ref="restProvider" />
+		
+		<property name="urlMapping">
+			<value>http://api.tripadvisor.com/api/partner/2.0/map/</value>
+		</property>
+
+		<property name="urlList">
+			<value>http://api.tripadvisor.com/api/partner/2.0/location/</value>
+		</property>
+
+		<property name="language">
+			<value>es</value>
+		</property>
+
+		<property name="provider" ref="googlePlacesProvider"/>		
 	</bean>
 </beans>

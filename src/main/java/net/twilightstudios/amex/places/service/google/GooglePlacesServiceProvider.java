@@ -1,6 +1,7 @@
 package net.twilightstudios.amex.places.service.google;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,45 @@ public class GooglePlacesServiceProvider implements PlacesServiceProvider {
 		}
 		
 		return resultado;
+	}
+	
+	public Place retrievePlace(Coordinates coord, String name) throws IOException{
+		
+		JSONObject raw = retrieveRawPlace(coord, name);
+		
+		if(raw.getString("status").equals("ZERO_RESULTS")){
+			return null;
+		}
+		
+		Place place = buildPlace(raw.getJSONArray("results").getJSONObject(0));
+		JSONObject detail = retrieveRawDetailInformation(place.getId());
+		completePlace(place, detail);
+		
+		return place;
+	}
+	
+	protected JSONObject retrieveRawPlace(Coordinates coord, String name) throws IOException{
+
+		StringBuilder urlBuilder = new StringBuilder(url);
+		urlBuilder.append("?location=");
+		urlBuilder.append(coord.getLat());
+		urlBuilder.append(",");
+		urlBuilder.append(coord.getLon());
+		urlBuilder.append("&radius=100");
+		urlBuilder.append("&language=");
+		urlBuilder.append(language);
+		urlBuilder.append("&name=");
+		urlBuilder.append(URLEncoder.encode(name, "UTF-8"));
+		urlBuilder.append("&key=");
+		urlBuilder.append(apiKey);
+		
+		String urlString = urlBuilder.toString();
+		
+		String genreJson = restProvider.retrieveRawInformation(urlString);
+		
+		JSONObject json = new JSONObject(genreJson);
+		
+		return json;
 	}
 	
 	private Place buildPlace(JSONObject obj) throws JSONException{
