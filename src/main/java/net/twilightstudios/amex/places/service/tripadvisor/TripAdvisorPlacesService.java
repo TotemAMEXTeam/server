@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.places.entity.Place;
+import net.twilightstudios.amex.places.entity.Rating;
 import net.twilightstudios.amex.places.service.PlacesService;
 import net.twilightstudios.amex.places.service.google.GooglePlacesServiceProvider;
 import net.twilightstudios.amex.util.rest.ApiKeyProvider;
@@ -87,6 +88,11 @@ public class TripAdvisorPlacesService implements PlacesService {
 
 	private void completePlace(Place place) throws IOException{
 		
+		if(place.getCoord() == null){
+		
+			return;
+		}
+		
 		Place googlePlace = googleProvider.retrievePlace(place.getCoord(), place.getName());
 		
 		if(googlePlace == null){
@@ -103,10 +109,23 @@ public class TripAdvisorPlacesService implements PlacesService {
 		
 		Place place = new Place();
 		place.setAddressString(json.getJSONObject("address_obj").getString("address_string"));
-		place.setCoord(new Coordinates(json.getDouble("latitude"), json.getDouble("longitude")));
+		
+		Coordinates coord = new Coordinates(json.getDouble("latitude"), json.getDouble("longitude"));
+		
+		if(coord.getLat() != 0 || coord.getLon() != 0){
+		
+			place.setCoord(coord);
+		}
+		
+		
 		place.setId(json.getString("location_id"));
 		place.setName(json.getString("name"));
-		place.setRating(json.getDouble("rating"));
+		
+		Rating rating = new Rating();
+		rating.setRating(json.getDouble("rating"));
+		rating.setRevisions(json.getInt("num_reviews"));
+		
+		place.setRating(rating);
 		
 		if(json.has("price_level") && !json.isNull("price_level")){
 		

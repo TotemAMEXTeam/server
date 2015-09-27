@@ -96,7 +96,7 @@ function loadActivities(data){
 		activityContentDiv.append("<div>Nombre: " + activity.name + "</div>");
 		activityContentDiv.append("<div>Direccion: " + activity.addressString + "</div>");
 		activityContentDiv.append("<div>Tlf: " + activity.phone + "</div>");
-		activityContentDiv.append("<div>Precio: " + activity.priceLevel + " Puntuacion: " + activity.rating + "</div>");		
+		activityContentDiv.append("<div>Precio: " + activity.priceLevel + " Puntuacion: " + activity.rating.rating + " Opiniones: " + activity.rating.revisions + "</div>");		
 		
 		if(activity.photoId != null){
 		
@@ -104,6 +104,8 @@ function loadActivities(data){
 			activityPhotoDiv.append("<img id=photo" + activity.id + " src=\"http://localhost:8080/server/rest/places/image/" + activity.photoId  + "\" class=\"photoImg\"/>");
 		}
 		
-		coords.push(activity.coord);
+		if(activity.coord != null){
+			coords.push(activity.coord);
+		}
 	}
 }

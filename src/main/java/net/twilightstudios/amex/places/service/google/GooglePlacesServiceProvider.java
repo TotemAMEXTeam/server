@@ -8,6 +8,7 @@ import java.util.List;
 import net.twilightstudios.amex.places.entity.Coordinates;
 import net.twilightstudios.amex.places.entity.OpeningDays;
 import net.twilightstudios.amex.places.entity.Place;
+import net.twilightstudios.amex.places.entity.Rating;
 import net.twilightstudios.amex.places.service.PlacesServiceProvider;
 import net.twilightstudios.amex.util.rest.ApiKeyProvider;
 import net.twilightstudios.amex.util.rest.RestProvider;
@@ -118,12 +119,20 @@ public class GooglePlacesServiceProvider implements PlacesServiceProvider {
 		}
 		
 		if(obj.has("rating")){
+		
+			Rating rating = new Rating();
+			rating.setRating(obj.getDouble("rating"));
 			
-			place.setRating(obj.getInt("rating"));
+			if(obj.has("user_ratings_total")){
+			
+				rating.setRevisions(obj.getInt("user_ratings_total"));
+			}
+			
+			place.setRating(rating);
 		}
 		else{
 			
-			place.setRating(-1);
+			place.setRating(null);
 		}
 		
 		if(obj.has("photos")){
