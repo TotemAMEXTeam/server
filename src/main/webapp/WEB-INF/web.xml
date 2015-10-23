@@ -20,4 +20,7 @@
     <servlet-name>DispatcherServlet</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
+  <listener>
+  	<listener-class>net.twilightstudios.amex.util.timer.listener.FlightsTimerListener</listener-class>
+  </listener>
 </web-app>

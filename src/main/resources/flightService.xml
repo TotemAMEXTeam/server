@@ -3,7 +3,27 @@
 
 <beans default-lazy-init="true">
 
-	<bean id="flightService"
+	<bean id="flightService" class="net.twilightstudios.amex.flight.service.impl.FlightServiceImpl">
+		<property name="airport" ref="airport"/>
+		<property name="onLineFlightService" ref="onLineFlightService"/>
+		<property name="offLineFlightService" ref="offLineFlightService"/>
+	</bean>
+
+	<bean id="flightDAO" class="net.twilightstudios.amex.flight.dao.impl.HibernateFlightDAO">
+		<property name="manager" ref="sessionManager"/>
+	</bean>
+	
+	<bean id="flightsTimer" class="net.twilightstudios.amex.util.timer.FlightsTimer">
+		<property name="flightService" ref="flightService"/>
+		<property name="period" value="7200000"/>
+	</bean>
+
+	<bean id="offLineFlightService" class="net.twilightstudios.amex.flight.service.database.DatabaseCachedFlightService">
+		<property name="manager" ref="sessionManager"/>
+		<property name="dao" ref="flightDAO"/>
+	</bean>
+
+	<bean id="onLineFlightService"
 		class="net.twilightstudios.amex.flight.service.aena.AenaHTMLFlightService">
 		<property name="url"
 			value="http://www.aena.es/csee/Satellite/infovuelos/es/" />

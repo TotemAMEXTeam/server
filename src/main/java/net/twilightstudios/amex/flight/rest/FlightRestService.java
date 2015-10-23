@@ -48,4 +48,13 @@ public class FlightRestService {
 		}
 	}
 	
+	@RequestMapping(value="/getFlight", method=RequestMethod.GET, produces={"application/json"})
+	public @ResponseBody List<Flight> retrieveFlights (@RequestParam(value = "flightId") String flightId) throws IOException {
+		try {
+			return flightService.retrieveFlights(flightId);
+		} catch (Exception e) {
+			 throw new WebApplicationException(e);
+		}
+	}
+	
 }

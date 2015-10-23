@@ -30,8 +30,9 @@ import net.twilightstudios.amex.flight.entity.Flight;
 import net.twilightstudios.amex.flight.entity.FlightStatus;
 import net.twilightstudios.amex.flight.entity.Status;
 import net.twilightstudios.amex.flight.service.FlightService;
+import net.twilightstudios.amex.flight.service.OnLineFlightService;
 
-public class AenaHTMLFlightService implements FlightService {
+public class AenaHTMLFlightService implements OnLineFlightService {
 	
 	private String sourceCharset;
 	private String htmlTableRows;

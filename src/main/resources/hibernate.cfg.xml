@@ -28,6 +28,7 @@
         <mapping resource="net/twilightstudios/amex/language/Language.hbm.xml"/>
         <mapping resource="net/twilightstudios/amex/language/LanguageExpression.hbm.xml"/>
         <mapping resource="net/twilightstudios/amex/geo/Country.hbm.xml"/>
+        <mapping resource="net/twilightstudios/amex/flight/Flight.hbm.xml"/>
         <mapping resource="net/twilightstudios/amex/util/rest/cache/CacheContent.hbm.xml"/>
         <mapping resource="net/twilightstudios/amex/util/rest/cache/ImageCacheContent.hbm.xml"/>
 

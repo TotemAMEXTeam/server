@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+
+	<class name="net.twilightstudios.amex.flight.entity.Flight" table="flight">
+	
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="identity"/>
+		</id>	
+		
+		<property name="flightNumber" type="java.lang.String" not-null="true" column="flightNumber"/>
+		<property name="origin" type="java.lang.String" not-null="true" column="origin"/>
+		<property name="destiny" type="java.lang.String" not-null="true" column="destiny"/>
+		<property name="company" type="java.lang.String" not-null="false" column="company"/>
+		<property name="scheduledDeparture" type="java.util.Date" not-null="true" column="scheduledDate"/>
+	
+	</class>
+
+</hibernate-mapping>
