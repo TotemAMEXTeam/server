@@ -87,14 +87,19 @@ public class DatabaseCachedFlightService implements OffLineFlightService {
 				}
 				else {
 					if (!mapOffLineFlights.get(f.getFlightNumber()).equals(f)) {
-						dao.update(f);
+						Flight persistentFlight = mapOffLineFlights.get(f.getFlightNumber());
+						persistentFlight.setCompany(f.getCompany());
+						persistentFlight.setDestiny(f.getDestiny());
+						persistentFlight.setOrigin(f.getOrigin());
+						persistentFlight.setScheduledDeparture(f.getScheduledDeparture());
+						dao.update(persistentFlight);
 					}
 				}
 			}
 			// Delete old flights
 			for (Flight f: offLineFlights) {
 				if (mapOnLineFlights.get(f.getFlightNumber())==null) {
-					dao.deleteFlight(f);
+					dao.deleteFlight(mapOffLineFlights.get(f.getFlightNumber()));
 				}
 			}
 			manager.commitOnCurrentSession();

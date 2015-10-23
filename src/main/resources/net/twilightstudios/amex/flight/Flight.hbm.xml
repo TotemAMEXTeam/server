@@ -15,7 +15,7 @@
 		<property name="origin" type="java.lang.String" not-null="true" column="origin"/>
 		<property name="destiny" type="java.lang.String" not-null="true" column="destiny"/>
 		<property name="company" type="java.lang.String" not-null="false" column="company"/>
-		<property name="scheduledDeparture" type="java.util.Date" not-null="true" column="scheduledDate"/>
+		<property name="scheduledDeparture" type="date" not-null="true" column="scheduledDate"/>
 	
 	</class>
 
