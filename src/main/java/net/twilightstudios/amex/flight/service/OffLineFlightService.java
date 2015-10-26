@@ -6,14 +6,7 @@ import java.util.List;
 
 import net.twilightstudios.amex.flight.entity.Flight;
 
-public interface OffLineFlightService {
-	
-	/**
-	 * Returns list of flights scheduled for today from specified airport
-	 * @param airport Airport name
-	 * @return list of flights scheduled for today. Empty list if there are no flights.
-	 */
-	public List<Flight> retrieveDailyFlights (String airport) throws IOException, ParseException;
+public interface OffLineFlightService extends CommonBackendFlightService {
 	
 	/**
 	 * Returns list of flights matching flightId
