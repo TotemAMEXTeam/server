@@ -15,5 +15,7 @@ public interface FlightDAO {
 	public void insert (Flight flight);
 	
 	public void update (Flight flight);
+	
+	public void deleteAll();
 
 }

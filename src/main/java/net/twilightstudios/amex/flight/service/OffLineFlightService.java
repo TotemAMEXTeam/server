@@ -19,6 +19,6 @@ public interface OffLineFlightService extends CommonBackendFlightService {
 	 * Updates database flights list
 	 * @throws IOException
 	 */
-	public void updateFlights(List<Flight> onLineFlights, List<Flight> offLineFlights) throws IOException;
+	public void updateFlights(List<Flight> onLineFlights) throws IOException;
 
 }

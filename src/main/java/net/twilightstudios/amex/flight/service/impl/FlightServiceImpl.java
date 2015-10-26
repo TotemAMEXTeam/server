@@ -60,8 +60,7 @@ public class FlightServiceImpl implements FlightService {
 	public void updateFlights() throws IOException {
 		try {
 			List<Flight> onLineFlights = onLineFlightService.retrieveDailyFlights(airport);
-			List<Flight> offLineFlights = offLineFlightService.retrieveDailyFlights(airport);
-			offLineFlightService.updateFlights(onLineFlights, offLineFlights);
+			offLineFlightService.updateFlights(onLineFlights);
 		} catch (ParseException e) {
 			throw new IOException (e.getMessage(), e);
 		}

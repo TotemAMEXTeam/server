@@ -3,6 +3,7 @@ package net.twilightstudios.amex.flight.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -54,6 +55,13 @@ public class HibernateFlightDAO implements FlightDAO {
 		Criteria criteria = session.createCriteria(Flight.class);
 		criteria.add(Restrictions.ilike("flightNumber", flightId, MatchMode.START));
 		return (List<Flight>)criteria.list();
+	}
+
+	@Override
+	public void deleteAll() {
+		Session session = manager.getCurrentSession();
+		Query query = session.createQuery("delete Flight f");
+		query.executeUpdate();
 	}
 
 }

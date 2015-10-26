@@ -69,38 +69,13 @@ public class DatabaseCachedFlightService implements OffLineFlightService {
 	}
 
 	@Override
-	public void updateFlights(List<Flight> onLineFlights, List<Flight> offLineFlights) throws IOException {
-		Map<String, Flight> mapOnLineFlights = new HashMap<String, Flight>();
-		for (Flight f: onLineFlights) {
-			mapOnLineFlights.put(f.getFlightNumber(), f);	
-		}
-		Map<String, Flight> mapOffLineFlights = new HashMap<String, Flight>();
-		for (Flight f: offLineFlights) {
-			mapOffLineFlights.put(f.getFlightNumber(), f);	
-		}
+	public void updateFlights(List<Flight> onLineFlights) throws IOException {
+
 		manager.beginTransactionOnCurrentSession();
 		try {
-			// Save new flights and update existent
+			dao.deleteAll();
 			for (Flight f: onLineFlights) {
-				if (mapOffLineFlights.get(f.getFlightNumber())==null) {
-					dao.insert(f);
-				}
-				else {
-					if (!mapOffLineFlights.get(f.getFlightNumber()).equals(f)) {
-						Flight persistentFlight = mapOffLineFlights.get(f.getFlightNumber());
-						persistentFlight.setCompany(f.getCompany());
-						persistentFlight.setDestiny(f.getDestiny());
-						persistentFlight.setOrigin(f.getOrigin());
-						persistentFlight.setScheduledDeparture(f.getScheduledDeparture());
-						dao.update(persistentFlight);
-					}
-				}
-			}
-			// Delete old flights
-			for (Flight f: offLineFlights) {
-				if (mapOnLineFlights.get(f.getFlightNumber())==null) {
-					dao.deleteFlight(mapOffLineFlights.get(f.getFlightNumber()));
-				}
+				dao.insert(f);
 			}
 			manager.commitOnCurrentSession();
 		}
